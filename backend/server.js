@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { PASSWORD, USERNAME, CLUSTER } from "./sensitiveData";
+import { PASSWORD, USERNAME, CLUSTER } from "./sensitiveData.js";
 mongoose.connect(
   `mongodb+srv://${USERNAME}:${PASSWORD}@${CLUSTER}.mongodb.net/freestyleMERN`
 );
