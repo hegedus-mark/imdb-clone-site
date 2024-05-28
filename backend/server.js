@@ -9,6 +9,6 @@ const app = express();
 const PORT = 6969;
 app.use(express.json());
 
-app.listen((PORT) => {
+app.listen(PORT, () => {
   console.log(`The server is running on port: ${PORT}`);
 });
