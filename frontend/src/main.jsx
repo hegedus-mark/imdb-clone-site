@@ -2,6 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { AuthPage, GuestView, MainPage, NotFound, UserView } from "./Pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import TestPage from "./Pages/TestPage/TestPage";
+import "./main.styles.scss"
+
 
 const isItLoggedIn = false;
 
@@ -17,6 +20,10 @@ const routing = createBrowserRouter([
       {
         path: "/auth",
         element: <AuthPage />,
+      },
+      {
+        path: "/test",
+        element: <TestPage/>,
       },
     ],
   },
