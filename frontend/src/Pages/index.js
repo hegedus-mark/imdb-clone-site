@@ -3,3 +3,7 @@ export * from "./AuthPage/AuthPage";
 export * from "./GuestView/GuestView";
 export * from "./NotFound/NotFound";
 export * from "./UserView/UserView";
+export * from "./Friends/Friends";
+export * from "./Movies/Movies";
+export * from "./NewsFeed/NewsFeed";
+export * from "./Mylist/MyList";

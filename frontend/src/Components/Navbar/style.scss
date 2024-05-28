@@ -5,3 +5,12 @@ body {
   background-color: rgb(0, 0, 0);
   font-family: "roboto";
 }
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 5vh;
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+}
