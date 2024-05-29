@@ -1,8 +1,8 @@
+import { MovieCard } from "../MovieCard/MovieCard";
 import "./style.scss";
 import Slider from "react-slick";
 
-
-export function Carousel({ items }) {
+export function Carousel({ items, category }) {
   const settings = {
     dots: false,
     infinite: true,
@@ -41,13 +41,10 @@ export function Carousel({ items }) {
 
   return (
     <div className="movie-carousel">
+      <h1>{category}</h1>
       <Slider {...settings}>
-        {items.map((movie, index) => (
-          <div key={index} className="movie-poster">
-            <div className="movie-content">
-              <p>{movie}</p>
-            </div>
-          </div>
+        {items.map((movie) => (
+          <MovieCard key={movie.id} detailedMovieData={movie} />
         ))}
       </Slider>
     </div>
