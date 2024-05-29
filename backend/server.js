@@ -25,6 +25,26 @@ const generateToken = (user) => {
   return jwt.sign({ userId: user._id, username: user.username }, secretKey, { expiresIn: '1h' });
 };
 
+//verification middleware
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+
+    req.user = decoded;
+    next();
+  });
+};
+
 const app = express();
 const PORT = 6969;
 app.use(express.json());
@@ -65,6 +85,7 @@ app.post("/api/login", async (req, res) => {
   //generating that fancy JWT token
   const token = generateToken(user);
   console.log(token);
+
   res.json({ token });
 })
 
@@ -81,11 +102,10 @@ app.post("/api/register", async (req, res) => {
     }
 
     user = new User({
-      username, email, password
+      username, email, password, displayName
     });
 
     await user.save();
-
     const token = generateToken(user);
 
     res.status(201).json({ token });
@@ -94,6 +114,10 @@ app.post("/api/register", async (req, res) => {
     res.status(500).json({ message: "Oopsie daisy, tiny server problemo" });
   }
 });
+
+app.get("/api/protected/userData", verifyToken, (req, res) => {
+  res.json({ message: "Hello there user!" });
+})
 
 app.listen(PORT, () => {
   console.log(`The server is running on port: ${PORT}`);

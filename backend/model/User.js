@@ -8,7 +8,8 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  displayName: { type: String, required: true }
 });
 
 //This is a middleware that makes sure the passwords are awlways hashed before storing them in the database!
