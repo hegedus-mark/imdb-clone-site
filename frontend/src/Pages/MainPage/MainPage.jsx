@@ -1,5 +1,5 @@
 import "./style.scss";
-import { MovieCard } from "../../Components";
+import { Carousel } from "../../Components";
 import { useFetchData } from "../../Hooks/";
 
 export const MainPage = () => {
@@ -9,7 +9,7 @@ export const MainPage = () => {
   };
   const { data, error, loading, fetchData } = useFetchData(
     true,
-    "/api/movie/222",
+    "/api/movies/popular",
     options
   );
 
@@ -18,6 +18,8 @@ export const MainPage = () => {
   ) : error ? (
     <h1>{error}</h1>
   ) : (
-    <MovieCard detailedMovieData={data} />
+    <div className="popular-movies">
+      <Carousel items={data.results} category={"Popular"} />
+    </div>
   );
 };

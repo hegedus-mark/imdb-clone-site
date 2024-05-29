@@ -22,7 +22,7 @@ export const MovieCard = ({ detailedMovieData }) => {
         <p>100% SO BAD IT'S GOOD</p>
       </div>
       <div className="title">
-        <h2>{detailedMovieData.original_title}</h2>
+        <h2>{detailedMovieData.title}</h2>
       </div>
     </div>
   );
