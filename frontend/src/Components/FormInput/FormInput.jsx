@@ -1,3 +1,4 @@
+import './style.scss'
 
 export const FormInput = ({ label, ...otherProps }) => {
   const { value } = otherProps;

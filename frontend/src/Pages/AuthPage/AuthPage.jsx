@@ -1,3 +1,11 @@
+import { SignIn, SignUp } from "../../Components";
+import "./style.scss"
+
 export const AuthPage = () => {
-  return <div>AuthPage Megy az élet és segg</div>;
+  return (
+    <div className="authentication-container">
+      <SignIn></SignIn>
+      <SignUp></SignUp>
+    </div>
+  );
 };
