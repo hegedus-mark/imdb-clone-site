@@ -6,4 +6,4 @@ export * from "./UserView/UserView";
 export * from "./Friends/Friends";
 export * from "./Movies/Movies";
 export * from "./NewsFeed/NewsFeed";
-export * from "./Mylist/MyList";
+export * from "./MyList/MyList";

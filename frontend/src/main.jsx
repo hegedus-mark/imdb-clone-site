@@ -12,9 +12,7 @@ import {
   MyList,
 } from "./Pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TestPage from "./Pages/TestPage/TestPage";
-import "./main.styles.scss"
-
+import "./main.styles.scss";
 
 const isItLoggedIn = false;
 
@@ -24,29 +22,13 @@ const routing = createBrowserRouter([
     element: <GuestView isItLoggedIn={isItLoggedIn} />,
     children: [
       {
-        path: "/newsfeed",
-        element: <NewsFeed />,
-      },
-      {
         path: "/movies",
         element: <Movies />,
       },
-      {
-        path: "/friends",
-        element: <Friends />,
-      },
 
-      {
-        path: "/my-list",
-        element: <MyList />,
-      },
       {
         path: "/auth",
         element: <AuthPage />,
-      },
-      {
-        path: "/test",
-        element: <TestPage/>,
       },
     ],
   },
@@ -57,6 +39,18 @@ const routing = createBrowserRouter([
       {
         path: "/segg",
         element: <MainPage />,
+      },
+      {
+        path: "/friends",
+        element: <Friends />,
+      },
+      {
+        path: "/my-list",
+        element: <MyList />,
+      },
+      {
+        path: "/newsfeed",
+        element: <NewsFeed />,
       },
     ],
   },
