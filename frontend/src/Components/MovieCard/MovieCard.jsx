@@ -9,7 +9,6 @@ export const MovieCard = ({ detailedMovieData }) => {
   };
 
   const posterClickHandler = () => {
-    console.log("Hahó");
     navigate(`/movie/${detailedMovieData.id}`);
   };
 
