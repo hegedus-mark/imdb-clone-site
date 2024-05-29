@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export const useFetchData = (runOnLoad, url, options) => {
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
   const fetchData = (url, options) => {
@@ -20,6 +20,8 @@ export const useFetchData = (runOnLoad, url, options) => {
   useEffect(() => {
     if (runOnLoad) {
       fetchData(url, options);
+    } else {
+      setLoading(false);
     }
   }, []);
 
