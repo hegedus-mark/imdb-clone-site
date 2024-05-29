@@ -1,10 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { AuthPage, GuestView, MainPage, NotFound, UserView } from "./Pages";
+import {
+  AuthPage,
+  GuestView,
+  MainPage,
+  NotFound,
+  UserView,
+  Friends,
+  NewsFeed,
+  Movies,
+  MyList,
+} from "./Pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TestPage from "./Pages/TestPage/TestPage";
-import "./main.styles.scss"
-
+import "./main.styles.scss";
 
 const isItLoggedIn = false;
 
@@ -14,16 +22,13 @@ const routing = createBrowserRouter([
     element: <GuestView isItLoggedIn={isItLoggedIn} />,
     children: [
       {
-        path: "/",
-        element: <MainPage />,
+        path: "/movies",
+        element: <Movies />,
       },
+
       {
         path: "/auth",
         element: <AuthPage />,
-      },
-      {
-        path: "/test",
-        element: <TestPage/>,
       },
     ],
   },
@@ -34,6 +39,18 @@ const routing = createBrowserRouter([
       {
         path: "/segg",
         element: <MainPage />,
+      },
+      {
+        path: "/friends",
+        element: <Friends />,
+      },
+      {
+        path: "/my-list",
+        element: <MyList />,
+      },
+      {
+        path: "/newsfeed",
+        element: <NewsFeed />,
       },
     ],
   },

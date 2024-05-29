@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import {NavBar} from "../../Components";
 
 export const UserView = ({ isItLoggedIn }) => {
   const navigate = useNavigate();
@@ -8,12 +9,12 @@ export const UserView = ({ isItLoggedIn }) => {
     if (!isItLoggedIn) {
       navigate("/auth");
     }
-  }, [isItLoggedIn]);
+  }, [isItLoggedIn, navigate]);
 
   return (
     isItLoggedIn && (
       <div>
-        <h1>UserView</h1>
+        <NavBar />
         <Outlet />
       </div>
     )
