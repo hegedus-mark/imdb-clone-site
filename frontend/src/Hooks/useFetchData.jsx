@@ -27,7 +27,7 @@ export const useFetchData = (runOnLoad, url, httpMethod, dataToSend = null) => {
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [url]);
 
   return { data, loading, error, fetchData };
 };

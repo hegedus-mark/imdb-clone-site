@@ -31,8 +31,10 @@ export const useMoviePage = () => {
         }
       });
       setTrailerKey(videoKeys[1]);
+    } else {
+      setTrailerKey(null);
     }
-  }, [videoData]);
+  }, [videoData, id]);
 
   return {
     data,
