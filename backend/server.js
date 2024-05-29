@@ -115,15 +115,22 @@ app.post("/api/login", async (req, res) => {
 })
 
 app.post("/api/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, displayName } = req.body;
 
   console.log(username, email, password)
 
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({
+      $or: [
+        { email: email },
+        { username: username } // or any other condition
+      ]
+    });
     if (user) {
       //we need to handle this on client side!!
-      return res.status(400).json({ message: "User already exists!" });
+      const errors = user.email === email ? { email: "Email is already registered" } : { username: "Username is taken :/" };
+      //maybe we can send back usernames that are available!!
+      return res.status(400).json({ message: `Hol' up buddy ${Object.values(errors)[0]}`, errors: errors });
     }
 
     user = new User({
