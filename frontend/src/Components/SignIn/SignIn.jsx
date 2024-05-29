@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { FormInput } from "../FormInput/FormInput";
+import { authoriseUser } from "../../services/authentication";
 
 const defaultFormFields = {
   email: "",
@@ -9,6 +12,7 @@ const defaultFormFields = {
 
 export const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const [error, setError] = useState({});
   const { email, password } = formFields;
 
   const resetFormField = () => {
@@ -21,11 +25,32 @@ export const SignIn = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    resetFormField();
-    console.log("submitted");
+    const id = toast.loading("Please wait...", { containerId: "sign-up" });
+    const response = await authoriseUser("login", formFields);
+    if (response.ok) {
+      resetFormField();
+      toast.update(id, {
+        render: "Great Success!",
+        type: "success",
+        isLoading: false,
+        containerId: "sign-up",
+        autoClose: 6000,
+      });
+    } else {
+      setError(response.errors);
+      toast.update(id, {
+        render: response.message,
+        type: "error",
+        isLoading: false,
+        containerId: "sign-up",
+        autoClose: 6000,
+      });
+    }
   };
+
+  const errorStyle = Object.keys(error).length ? true : false;
 
   return (
     <div className="sign-up-container">
@@ -39,6 +64,7 @@ export const SignIn = () => {
           required
           value={email}
           type="email"
+          error={error.message}
         />
         <FormInput
           label="Password"
@@ -47,6 +73,7 @@ export const SignIn = () => {
           required
           value={password}
           type="password"
+          errorStyle={errorStyle}
         />
         <div className="buttons-container">
           <button type="submit">Sign in</button>
@@ -55,6 +82,12 @@ export const SignIn = () => {
           </Button> */}
         </div>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        containerId={"sign-in"}
+      />
     </div>
   );
 };

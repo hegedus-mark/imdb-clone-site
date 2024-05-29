@@ -1,0 +1,25 @@
+POST http://localhost:6969/api/register/
+Content-Type: application/json
+
+{
+  "username": "Pisty",
+  "displayName": "Pisty Pisty",
+  "password": "IAmPisty",
+  "email": "pisty@gmail.com"
+}
+###
+
+POST http://localhost:6969/api/login/
+Content-Type: application/json
+
+{
+  "username": "Pisty",
+  "password": "IAmPisty",
+  "email": "pisty@gmail.com"
+}
+###
+
+
+GET http://localhost:6969/api/movies/popular
+
+###
