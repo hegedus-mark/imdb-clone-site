@@ -1,15 +1,18 @@
-import { useParams } from "react-router-dom";
-import { useFetchData } from "../../Hooks";
 import "./style.scss";
+import { useMoviePage } from "./useMoviePage";
 
 export const MoviePage = () => {
-  const baseImageUrl = "https://image.tmdb.org/t/p";
-  const { id } = useParams();
-  const { data, loading, error } = useFetchData(
-    true,
-    `/api/movie/${id}`,
-    "GET"
-  );
+  const {
+    data,
+    loading,
+    error,
+    videoData,
+    videoLoading,
+    videoError,
+    baseImageUrl,
+    baseYTUrl,
+    trailerKey,
+  } = useMoviePage();
 
   return loading ? (
     <h1>Please wait, loading</h1>
@@ -34,9 +37,19 @@ export const MoviePage = () => {
               src={`${baseImageUrl}/w500/${data.poster_path}`}
               alt="Poster"
             />
-            <div className="description">
-              <p>{data.overview}</p>
-            </div>
+            {videoLoading ? (
+              <h4>Video loading</h4>
+            ) : videoError ? (
+              <h4>{videoError}</h4>
+            ) : (
+              videoData && (
+                <iframe
+                  allowFullScreen="true"
+                  className="trailer"
+                  src={`${baseYTUrl}${trailerKey}`}
+                ></iframe>
+              )
+            )}
           </div>
           {data.genres.map((genre) => {
             return <button key={genre.id}>{genre.name}</button>;

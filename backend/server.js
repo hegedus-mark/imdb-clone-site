@@ -53,6 +53,19 @@ app.get("/api/movies/nowplaying", (req, res) => {
     });
 });
 
+app.get("/api/trailer/:id", (req, res) => {
+  const ID = req.params.id;
+  const url = `${baseUrl}/${ID}/videos?language=en-US';`;
+
+  fetch(url, options)
+    .then((res) => res.json())
+    .then((json) => res.json(json))
+    .catch((err) => {
+      console.log(err),
+        res.status(506).json({ message: "Something went wrong" });
+    });
+});
+
 app.listen(PORT, () => {
   console.log(`The server is running on port: ${PORT}`);
 });
