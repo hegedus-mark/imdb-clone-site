@@ -3,13 +3,17 @@ import { useState } from "react";
 import { FormInput } from "../FormInput/FormInput";
 
 const defaultFormFields = {
+  displayName: "",
+  username: "",
   email: "",
   password: "",
+  confirmPassword: "",
 };
 
-export const SignIn = () => {
+export const SignUp = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { email, password } = formFields;
+  const { displayName, username, email, password, confirmPassword } =
+    formFields;
 
   const resetFormField = () => {
     setFormFields(defaultFormFields);
@@ -29,9 +33,25 @@ export const SignIn = () => {
 
   return (
     <div className="sign-up-container">
-      <h2>Already Have an Account?</h2>
-      <span>Sign in with your email and password</span>
+      <h2>Don&apos;t have an account?</h2>
+      <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
+        <FormInput
+          label="Display Name"
+          onChange={handleChange}
+          name="displayName"
+          required
+          value={displayName}
+          type="text"
+        />
+        <FormInput
+          label="Username"
+          onChange={handleChange}
+          name="username"
+          required
+          value={username}
+          type="text"
+        />
         <FormInput
           label="Email"
           onChange={handleChange}
@@ -46,6 +66,14 @@ export const SignIn = () => {
           name="password"
           required
           value={password}
+          type="password"
+        />
+        <FormInput
+          label="Confirm Password"
+          onChange={handleChange}
+          name="confirmPassword"
+          required
+          value={confirmPassword}
           type="password"
         />
         <div className="buttons-container">

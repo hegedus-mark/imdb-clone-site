@@ -8,7 +8,7 @@ export function Carousel({ items }) {
     infinite: true,
     speed: 1000,
     slidesToShow: 6,
-    slidesToScroll: 6,
+    slidesToScroll: 4,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
