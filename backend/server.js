@@ -100,18 +100,24 @@ app.get("/api/trailer/:id", (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { email, password } = req.body;
+    console.log("credentials", email, password)
 
-  const user = await User.findOne({ username });
-  if (!user || !(await user.comparePassword(password))) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    const user = await User.findOne({ email });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({ message: "Invalid credentials", errors: { error: "Invalid credentials" } });
+    }
+
+    //generating that fancy JWT token
+    const token = generateToken(user);
+    console.log(token);
+
+    res.json({ token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Oopsie daisy, tiny server problemo" });
   }
-
-  //generating that fancy JWT token
-  const token = generateToken(user);
-  console.log(token);
-
-  res.json({ token });
 })
 
 app.post("/api/register", async (req, res) => {

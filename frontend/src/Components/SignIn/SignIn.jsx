@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { FormInput } from "../FormInput/FormInput";
+import { useFetchAuth } from "../../Hooks";
 
 const defaultFormFields = {
   email: "",
@@ -9,7 +12,9 @@ const defaultFormFields = {
 
 export const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const [error, setError] = useState({});
   const { email, password } = formFields;
+  const { authoriseUser, loading } = useFetchAuth("login");
 
   const resetFormField = () => {
     setFormFields(defaultFormFields);
@@ -21,12 +26,17 @@ export const SignIn = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    resetFormField();
-    console.log("submitted");
+    const response = await authoriseUser(formFields);
+    if (response.ok) {
+      resetFormField();
+      toast.success("Great Success!!!", { containerId: "sign-in" });
+    } else {
+      setError(response.errors);
+      toast.error(`Fail: ${response.message}`, { containerId: "sign-in" });
+    }
   };
-
   return (
     <div className="sign-up-container">
       <h2>Already Have an Account?</h2>
@@ -55,6 +65,12 @@ export const SignIn = () => {
           </Button> */}
         </div>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        containerId={"sign-in"}
+      />
     </div>
   );
 };

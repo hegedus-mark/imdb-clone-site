@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { FormInput } from "../FormInput/FormInput";
-import useRegistration from "./useRegistration";
+import { useFetchAuth } from "../../Hooks";
 
 const defaultFormFields = {
   displayName: "",
@@ -13,7 +13,6 @@ const defaultFormFields = {
   confirmPassword: "",
 };
 
-
 //there should be a mechanism that stops the user from sending requests unless he changed the field!
 
 export const SignUp = () => {
@@ -21,7 +20,7 @@ export const SignUp = () => {
   const { displayName, username, email, password, confirmPassword } =
     formFields;
   const [errors, setErrors] = useState({});
-  const { registerUser, loading } = useRegistration();
+  const { authoriseUser, loading } = useFetchAuth("register");
 
   console.log("errors", errors);
 
@@ -48,13 +47,13 @@ export const SignUp = () => {
       return;
     }
 
-    const response = await registerUser(formFields);
+    const response = await authoriseUser(formFields);
     if (response.ok) {
       resetFormField();
-      toast.success("Great Success!!!");
+      toast.success("Great Success!!!", { containerId: "sign-up" });
     } else {
       setErrors({ ...newErrors, ...response.errors });
-      toast.error(`Fail: ${response.message}`);
+      toast.error(`Fail: ${response.message}`, { containerId: "sign-up" });
     }
   };
 
@@ -117,6 +116,7 @@ export const SignUp = () => {
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
+        containerId={"sign-up"}
       />
     </div>
   );
