@@ -4,6 +4,7 @@ import Slider from "react-slick";
 
 export function Carousel({ items, category }) {
   const settings = {
+    draggable: false,
     dots: false,
     infinite: true,
     speed: 1000,
@@ -44,7 +45,9 @@ export function Carousel({ items, category }) {
       <h1>{category}</h1>
       <Slider {...settings}>
         {items.map((movie) => (
-          <MovieCard key={movie.id} detailedMovieData={movie} />
+          <div className="cards" key={movie.id}>
+            <MovieCard detailedMovieData={movie} />
+          </div>
         ))}
       </Slider>
     </div>
