@@ -1,0 +1,41 @@
+.movie-card {
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  font-size: small;
+  background-color: rgba(255, 255, 255, 0.192);
+  padding: 1rem;
+  border-radius: 10px;
+  h1 {
+    text-align: center;
+  }
+}
+
+.movie-details {
+  display: flex;
+  flex: 1
+}
+
+.movie-image-container {
+  display: flex;
+  flex:1
+}
+
+.movie-image-container>img{
+  width: 100%;
+  height: fit-content;
+}
+
+.description {
+  margin: 0 1rem;
+  display: flex;
+  flex: 2;
+  overflow: auto;
+  height: 8rem;
+  scrollbar-width: thin;
+
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
