@@ -22,8 +22,8 @@ const routing = createBrowserRouter([
     element: <GuestView isItLoggedIn={isItLoggedIn} />,
     children: [
       {
-        path: "/movies",
-        element: <Movies />,
+        path: "/",
+        element: <MainPage />,
       },
 
       {
