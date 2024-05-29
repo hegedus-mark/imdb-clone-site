@@ -1,0 +1,39 @@
+/* Carousel.css */
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
+/* src/MovieCarousel.scss */
+.movie-carousel {
+  position: relative;
+  margin: 20px;
+
+  .movie-poster {
+    .movie-content {
+      background-color: wheat;
+      height: 300px;
+      margin: 20px;
+    }
+    p {
+      color: black;
+      text-align: center;
+    }
+  }
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 50px;
+  z-index: 2;
+  color: red;
+}
+
+.next {
+  right: 10px;
+}
+
+.prev {
+  left: 10px;
+}
