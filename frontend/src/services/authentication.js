@@ -1,25 +1,35 @@
-export const registerUser = async (formFields) => {
-  //have to make sure that all the edge cases are handled, and the user gets back the proper feedback!
-  const {username, email, password, displayName} = formFields;
+//endpoint can be either login or register
+/**
+ * 
+ * @param {string} endpoint - can be either "login" or "register"
+ * @returns an object with a status
+ */
+
+export const authoriseUser = async (endpoint, formFields) => {
+
   try {
-    const response = await fetch('/api/register', {
+    const response = await fetch(`/api/${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ username, email, password, displayName })
+      body: JSON.stringify(formFields)
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      // Store the JWT token received from the server, for now I store it in localstorage but Cookies would be way better in the future!
       localStorage.setItem('token', data.token);
-      console.log('User registered successfully:', data);
+      console.log('Success:', data);
+      console.log("token", data.token);
+      return { ok: true }
     } else {
-      console.error('Registration failed:', data.message);
+      console.error('Fail:', data.message);
+      //we will send back an error, for example username is occupied!
+      return { ok: false, message: data.message, errors: data.errors || {} }
     }
   } catch (error) {
     console.error('Error:', error);
+    return { ok: false, message: 'Mehhh server error :/// ,', errors: {} }
   }
 };

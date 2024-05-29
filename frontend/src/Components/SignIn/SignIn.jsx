@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { FormInput } from "../FormInput/FormInput";
-import { useFetchAuth } from "../../Hooks";
+import { authoriseUser } from "../../services/authentication";
 
 const defaultFormFields = {
   email: "",
@@ -14,7 +14,6 @@ export const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [error, setError] = useState({});
   const { email, password } = formFields;
-  const { authoriseUser, loading } = useFetchAuth("login");
 
   const resetFormField = () => {
     setFormFields(defaultFormFields);
@@ -28,15 +27,31 @@ export const SignIn = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await authoriseUser(formFields);
+    const id = toast.loading("Please wait...", { containerId: "sign-up" });
+    const response = await authoriseUser("login", formFields);
     if (response.ok) {
       resetFormField();
-      toast.success("Great Success!!!", { containerId: "sign-in" });
+      toast.update(id, {
+        render: "Great Success!",
+        type: "success",
+        isLoading: false,
+        containerId: "sign-up",
+        autoClose: 6000,
+      });
     } else {
       setError(response.errors);
-      toast.error(`Fail: ${response.message}`, { containerId: "sign-in" });
+      toast.update(id, {
+        render: response.message,
+        type: "error",
+        isLoading: false,
+        containerId: "sign-up",
+        autoClose: 6000,
+      });
     }
   };
+
+  const errorStyle = Object.keys(error).length ? true : false;
+
   return (
     <div className="sign-up-container">
       <h2>Already Have an Account?</h2>
@@ -49,6 +64,7 @@ export const SignIn = () => {
           required
           value={email}
           type="email"
+          error={error.message}
         />
         <FormInput
           label="Password"
@@ -57,6 +73,7 @@ export const SignIn = () => {
           required
           value={password}
           type="password"
+          errorStyle={errorStyle}
         />
         <div className="buttons-container">
           <button type="submit">Sign in</button>

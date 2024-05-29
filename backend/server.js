@@ -100,13 +100,15 @@ app.get("/api/trailer/:id", (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
+
+  //if the user doesn't have email we should ask him to register!
   try {
     const { email, password } = req.body;
     console.log("credentials", email, password)
 
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ message: "Invalid credentials", errors: { error: "Invalid credentials" } });
+      return res.status(401).json({ message: "Invalid Credentials", errors: { message: "Either the password or the email is incorrect!!!" } });
     }
 
     //generating that fancy JWT token

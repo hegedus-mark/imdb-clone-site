@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { FormInput } from "../FormInput/FormInput";
-import { useFetchAuth } from "../../Hooks";
+import { authoriseUser } from "../../services/authentication";
 
 const defaultFormFields = {
   displayName: "",
@@ -20,7 +20,6 @@ export const SignUp = () => {
   const { displayName, username, email, password, confirmPassword } =
     formFields;
   const [errors, setErrors] = useState({});
-  const { authoriseUser, loading } = useFetchAuth("register");
 
   console.log("errors", errors);
 
@@ -47,13 +46,26 @@ export const SignUp = () => {
       return;
     }
 
-    const response = await authoriseUser(formFields);
+    const id = toast.loading("Please wait...", { containerId: "sign-up" });
+    const response = await authoriseUser("register", formFields);
     if (response.ok) {
       resetFormField();
-      toast.success("Great Success!!!", { containerId: "sign-up" });
+      toast.update(id, {
+        render: "Great Success!",
+        type: "success",
+        isLoading: false,
+        containerId: "sign-up",
+        autoClose: 6000,
+      });
     } else {
       setErrors({ ...newErrors, ...response.errors });
-      toast.error(`Fail: ${response.message}`, { containerId: "sign-up" });
+      toast.update(id, {
+        render: response.message,
+        type: "error",
+        isLoading: false,
+        containerId: "sign-up",
+        autoClose: 6000,
+      });
     }
   };
 
