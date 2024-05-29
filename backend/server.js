@@ -28,19 +28,6 @@ app.get("/api/movies/popular", (req, res) => {
     });
 });
 
-app.get("/api/movie/:id", (req, res) => {
-  const ID = req.params.id;
-  const url = `${baseUrl}/${ID}`;
-
-  fetch(url, options)
-    .then((res) => res.json())
-    .then((json) => res.json(json))
-    .catch((err) => {
-      console.log(err),
-        res.status(506).json({ message: "Something went wrong" });
-    });
-});
-
 app.get("/api/movies/nowplaying", (req, res) => {
   const url = `${baseUrl}/now_playing?language=en-US&page=1`;
 
@@ -64,6 +51,36 @@ app.get("/api/trailer/:id", (req, res) => {
       console.log(err),
         res.status(506).json({ message: "Something went wrong" });
     });
+});
+
+app.get("/api/movie/:id", (req, res, next) => {
+  const ID = req.params.id;
+  const url = `${baseUrl}/${ID}`;
+
+  fetch(url, options)
+    .then((res) => res.json())
+    .then((json) => res.json(json))
+    .catch((err) => {
+      console.log(err),
+        res.status(506).json({ message: "Something went wrong" });
+    });
+});
+
+app.get("/api/searchmovie/:search", async (req, res) => {
+  try {
+    const search = encodeURIComponent(req.params.search);
+    console.log(search);
+    const url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
+
+    fetch(url, options)
+      .then((res) => res.json())
+      .then((json) => {
+        res.json(json), console.log(json);
+      })
+      .catch((err) => console.log(err));
+  } catch (err) {
+    res.status(506).json({ message: "Something went wrong" });
+  }
 });
 
 app.listen(PORT, () => {

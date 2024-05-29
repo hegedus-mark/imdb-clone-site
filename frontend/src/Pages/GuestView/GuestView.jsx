@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { NavBar } from "../../Components";
+import { NavBar, Searchbar } from "../../Components";
 
 export const GuestView = ({ isItLoggedIn }) => {
   const navigate = useNavigate();
@@ -9,6 +9,7 @@ export const GuestView = ({ isItLoggedIn }) => {
         Guest view
       </h1>
       <NavBar />
+      <Searchbar />
       <Outlet />
     </div>
   );
