@@ -4,6 +4,7 @@ import Slider from "react-slick";
 
 export function Carousel({ items, category }) {
   const settings = {
+    draggable: false,
     dots: false,
     infinite: true,
     speed: 1000,
