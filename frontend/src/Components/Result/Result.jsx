@@ -1,17 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import { useFetchData } from "../../Hooks";
 import "./style.scss";
+import { useResult } from "./useResult";
 
 export const Result = ({ movie, setSearch }) => {
-  const baseImageUrl = "https://image.tmdb.org/t/p";
-  const navigate = useNavigate();
-  const { data } = useFetchData(true, `/api/movie/${movie.id}`, "GET");
-
-  const resultMovieClickHandler = (id) => {
-    console.log("clicked", movie.id);
-    navigate(`/movie/${id}`);
-    setSearch("");
-  };
+  const { resultMovieClickHandler, data, baseImageUrl } = useResult(
+    movie,
+    setSearch
+  );
 
   return (
     <div

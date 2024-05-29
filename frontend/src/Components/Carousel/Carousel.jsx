@@ -3,6 +3,24 @@ import "./style.scss";
 import Slider from "react-slick";
 
 export function Carousel({ items, category }) {
+  const NextArrow = (props) => {
+    const { onClick } = props;
+    return (
+      <div className="arrow next" onClick={onClick}>
+        &gt;
+      </div>
+    );
+  };
+
+  const PrevArrow = (props) => {
+    const { onClick } = props;
+    return (
+      <div className="arrow prev" onClick={onClick}>
+        &lt;
+      </div>
+    );
+  };
+
   const settings = {
     draggable: false,
     dots: false,
@@ -53,21 +71,3 @@ export function Carousel({ items, category }) {
     </div>
   );
 }
-
-const NextArrow = (props) => {
-  const { onClick } = props;
-  return (
-    <div className="arrow next" onClick={onClick}>
-      &gt;
-    </div>
-  );
-};
-
-const PrevArrow = (props) => {
-  const { onClick } = props;
-  return (
-    <div className="arrow prev" onClick={onClick}>
-      &lt;
-    </div>
-  );
-};
