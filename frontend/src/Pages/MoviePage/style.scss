@@ -24,7 +24,12 @@
 .main-details {
   display: flex;
   .movie-poster {
-    width: 20rem;
+    height: 35rem;
     margin-right: 2rem;
   }
+}
+
+.trailer {
+  width: 100rem;
+  border: 0;
 }
