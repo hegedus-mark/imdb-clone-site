@@ -3,7 +3,7 @@ import "./style.scss";
 export function NavBar() {
   return (
     <div>
-      <ul className="container">
+      <ul className="navbar-container">
         <li>
           <Link to="/newsfeed">News Feed</Link>
         </li>
