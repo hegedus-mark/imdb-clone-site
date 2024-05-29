@@ -41,14 +41,16 @@ export const MoviePage = () => {
               <h4>Video loading</h4>
             ) : videoError ? (
               <h4>{videoError}</h4>
+            ) : videoData && trailerKey ? (
+              <iframe
+                allowFullScreen="true"
+                className="trailer"
+                src={`${baseYTUrl}${trailerKey}`}
+              ></iframe>
             ) : (
-              videoData && (
-                <iframe
-                  allowFullScreen="true"
-                  className="trailer"
-                  src={`${baseYTUrl}${trailerKey}`}
-                ></iframe>
-              )
+              <div className="description">
+                <p>{data.overview}</p>
+              </div>
             )}
           </div>
           {data.genres.map((genre) => {
