@@ -205,6 +205,19 @@ app.get("/api/movies/:genre", async (req, res) => {
   }
 });
 
+app.get("/api/genres", async (req, res) => {
+  try {
+    const url = `https://api.themoviedb.org/3/genre/movie/list`;
+    fetch(url, options)
+      .then((res) => res.json())
+      .then((json) => {
+        res.json(json);
+      });
+  } catch (error) {
+    res.status(500).json({ message: "something wrong" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`The server is running on port: ${PORT}`);
 });

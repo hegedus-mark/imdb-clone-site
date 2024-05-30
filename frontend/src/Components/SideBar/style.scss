@@ -4,10 +4,11 @@
   gap: 1.75vh;
   list-style-type: none;
   position: fixed;
-  left: 160vh;
+  right: 0;
   bottom: 11vh;
 
   button {
+    cursor: p;
     background-color: black;
     color: rgb(57, 34, 160);
     border: none;

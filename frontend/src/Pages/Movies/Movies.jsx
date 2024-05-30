@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
-import { Carousel, SideBar } from "../../Components";
+import { Carousel, MovieCard, SideBar } from "../../Components";
 import { useParams } from "react-router-dom";
 
 export const Movies = () => {
@@ -27,11 +27,14 @@ export const Movies = () => {
         <p>loaing</p>
       ) : (
         <Fragment>
-          <div>
+          <div classname="movies-container">
             <h1>{categoryName}</h1>
             {data.map((item, index) => {
-              console.log(item);
-              return <p key={index}>{item.title}</p>;
+              return (
+                <div key={index} classname="movie-container">
+                  <MovieCard detailedMovieData={item} />;
+                </div>
+              );
             })}
           </div>
           <SideBar setCategoryName={setCategoryName} />
