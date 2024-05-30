@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { FormInput } from "../FormInput/FormInput";
-import { authoriseUser } from "../../services/authentication";
+import { AuthContext } from "../contexts/AuthContext/AuthContext";
+import "./style.scss"
 
 const defaultFormFields = {
   email: "",
@@ -13,6 +14,8 @@ const defaultFormFields = {
 export const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [error, setError] = useState({});
+  const {authoriseUser} = useContext(AuthContext)
+
   const { email, password } = formFields;
 
   const resetFormField = () => {

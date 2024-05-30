@@ -21,8 +21,9 @@ const secretKey = crypto.randomBytes(32).toString('hex');
 console.log('Secret Key:', secretKey);
 
 // jwt token for authentication
-const generateToken = (user) => {
-  return jwt.sign({ userId: user._id, username: user.username }, secretKey, { expiresIn: '1h' });
+const generateToken = ({ _id, username }) => {
+
+  return jwt.sign({ userId: _id, username }, secretKey, { expiresIn: '1h' });
 };
 
 //verification middleware
@@ -86,6 +87,42 @@ app.get("/api/trailer/:id", (req, res) => {
     });
 });
 
+app.get("/api/movie/:id", (req, res, next) => {
+  const ID = req.params.id;
+  const url = `${baseUrl}/${ID}`;
+
+  fetch(url, options)
+    .then((res) => res.json())
+    .then((json) => res.json(json))
+    .catch((err) => {
+      console.log(err),
+        res.status(506).json({ message: "Something went wrong" });
+    });
+});
+
+app.get("/api/searchmovie/:search", async (req, res) => {
+  try {
+    const search = encodeURIComponent(req.params.search);
+    console.log(search);
+    const url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
+
+    fetch(url, options)
+      .then((res) => res.json())
+      .then((json) => {
+        res.json(json), console.log(json);
+      })
+      .catch((err) => console.log(err));
+  } catch (err) {
+    res.status(506).json({ message: "Something went wrong" });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`The server is running on port: ${PORT}`);
+});
+
+
+//--------------------------------AUTHORISATION -------------------------------
 app.post("/api/login", async (req, res) => {
 
   //if the user doesn't have email we should ask him to register!
@@ -122,7 +159,6 @@ app.post("/api/register", async (req, res) => {
       ]
     });
     if (user) {
-      //we need to handle this on client side!!
       const errors = user.email === email ? { email: "Email is already registered" } : { username: "Username is taken :/" };
       //maybe we can send back usernames that are available!!
       return res.status(400).json({ message: `Hol' up buddy ${Object.values(errors)[0]}`, errors: errors });
@@ -142,40 +178,11 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
+/* app.get("/api/protected/userData", verifyToken, (req, res) => {
+
+}) */
+
 app.get("/api/protected/userData", verifyToken, (req, res) => {
+  console.log(req.user)
   res.json({ message: "Hello there user!" });
 })
-
-app.get("/api/movie/:id", (req, res, next) => {
-  const ID = req.params.id;
-  const url = `${baseUrl}/${ID}`;
-
-  fetch(url, options)
-    .then((res) => res.json())
-    .then((json) => res.json(json))
-    .catch((err) => {
-      console.log(err),
-        res.status(506).json({ message: "Something went wrong" });
-    });
-});
-
-app.get("/api/searchmovie/:search", async (req, res) => {
-  try {
-    const search = encodeURIComponent(req.params.search);
-    console.log(search);
-    const url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
-
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((json) => {
-        res.json(json), console.log(json);
-      })
-      .catch((err) => console.log(err));
-  } catch (err) {
-    res.status(506).json({ message: "Something went wrong" });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`The server is running on port: ${PORT}`);
-});
