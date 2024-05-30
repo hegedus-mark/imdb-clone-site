@@ -178,5 +178,6 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.get("/api/protected/userData", verifyToken, (req, res) => {
+  console.log(req.user)
   res.json({ message: "Hello there user!" });
 })
