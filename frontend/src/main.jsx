@@ -10,6 +10,7 @@ import {
   NewsFeed,
   Movies,
   MyList,
+  Profile,
 } from "./Pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./main.styles.scss";
@@ -32,6 +33,10 @@ const routing = createBrowserRouter([
         element: <Movies />,
       },
       {
+        path: "/profile/:userId",
+        element: <Profile />,
+      },
+      {
         path: "/auth",
         element: <AuthPage />,
       },
@@ -52,6 +57,10 @@ const routing = createBrowserRouter([
       {
         path: "/movies",
         element: <Movies />,
+      },
+      {
+        path: "/profile/:userId",
+        element: <Profile />,
       },
       {
         path: "/friends",

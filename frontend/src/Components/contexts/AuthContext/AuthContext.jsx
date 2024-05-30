@@ -1,28 +1,34 @@
 import { createContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-//Everything related to authentication and the authentication state management is found here! 
+//Everything related to authentication and the authentication state management is found here!
 
 export const AuthContext = createContext({
   user: null,
   token: null,
   authoriseUser: () => null,
   logout: () => null,
+  isItLoggedIn: false,
 });
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [isItLoggedIn, setIsItLoggedIn] = useState(false);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    //For testing
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+    const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
-    console.log(storedToken);
-    console.log(storedUser);
+    console.log("token", storedToken);
+    console.log("user", storedUser);
 
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
+      setIsItLoggedIn(true);
     }
   }, []);
 
@@ -31,6 +37,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(user));
     setToken(token);
     setUser(user);
+    setIsItLoggedIn(true);
   };
 
   const logout = () => {
@@ -38,6 +45,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
     setToken(null);
     setUser(null);
+    setIsItLoggedIn(false);
   };
 
   const authoriseUser = async (endpoint, formFields) => {
@@ -65,12 +73,16 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error:", error);
-      return { ok: false, message: "Mehhh server error :/// ,", errors: {} };
+      return {
+        ok: false,
+        message: "Something is not right, I can feel it... ,",
+        errors: {},
+      };
     }
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, logout, authoriseUser }}>
+    <AuthContext.Provider value={{ token, user, isItLoggedIn, logout, authoriseUser }}>
       {children}
     </AuthContext.Provider>
   );
