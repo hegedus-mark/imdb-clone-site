@@ -10,7 +10,6 @@ import {
   NewsFeed,
   Movies,
   MyList,
-  MoviesByGenre,
 } from "./Pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./main.styles.scss";
@@ -27,13 +26,12 @@ const routing = createBrowserRouter([
         path: "/",
         element: <MainPage />,
       },
-      { 
-        
-        path: "/",
-        element: <MainPage />,
-      },
       {
         path: "movies",
+        element: <Movies />,
+      },
+      {
+        path: "/movies/:genre",
         element: <Movies />,
       },
       {
@@ -54,8 +52,13 @@ const routing = createBrowserRouter([
         path: "/",
         element: <MainPage />,
       },
+
       {
         path: "/movies",
+        element: <Movies />,
+      },
+      {
+        path: "/movies/:genre",
         element: <Movies />,
       },
       {

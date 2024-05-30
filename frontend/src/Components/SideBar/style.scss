@@ -1,0 +1,19 @@
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75vh;
+  list-style-type: none;
+  position: fixed;
+  left: 160vh;
+  bottom: 11vh;
+
+  button {
+    background-color: black;
+    color: rgb(57, 34, 160);
+    border: none;
+
+    &:hover {
+      scale: 2;
+    }
+  }
+}

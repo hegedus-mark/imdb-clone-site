@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import { PASSWORD, USERNAME, CLUSTER, ACCESS_TOKEN } from "./sensitiveData.js";
 import User from "./model/User.js";
 mongoose.connect(
@@ -17,12 +17,13 @@ const options = {
 };
 
 //secret key for jwt
-const secretKey = crypto.randomBytes(32).toString('hex');
-console.log('Secret Key:', secretKey);
+const secretKey = crypto.randomBytes(32).toString("hex");
 
 // jwt token for authentication
 const generateToken = (user) => {
-  return jwt.sign({ userId: user._id, username: user.username }, secretKey, { expiresIn: '1h' });
+  return jwt.sign({ userId: user._id, username: user.username }, secretKey, {
+    expiresIn: "1h",
+  });
 };
 
 //verification middleware
@@ -30,14 +31,14 @@ const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(401).json({ message: "No token provided" });
   }
 
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(" ")[1];
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ message: 'Invalid token' });
+      return res.status(401).json({ message: "Invalid token" });
     }
 
     req.user = decoded;
@@ -87,49 +88,61 @@ app.get("/api/trailer/:id", (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
-
   //if the user doesn't have email we should ask him to register!
   try {
     const { email, password } = req.body;
-    console.log("credentials", email, password)
+    console.log("credentials", email, password);
 
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ message: "Invalid Credentials", errors: { message: "Either the password or the email is incorrect!!!" } });
+      return res.status(401).json({
+        message: "Invalid Credentials",
+        errors: {
+          message: "Either the password or the email is incorrect!!!",
+        },
+      });
     }
 
     //generating that fancy JWT token
     const token = generateToken(user);
-    console.log(token);
 
     res.json({ token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Oopsie daisy, tiny server problemo" });
   }
-})
+});
 
 app.post("/api/register", async (req, res) => {
   const { username, email, password, displayName } = req.body;
 
-  console.log(username, email, password)
+  console.log(username, email, password);
 
   try {
     let user = await User.findOne({
       $or: [
         { email: email },
-        { username: username } // or any other condition
-      ]
+        { username: username }, // or any other condition
+      ],
     });
     if (user) {
       //we need to handle this on client side!!
-      const errors = user.email === email ? { email: "Email is already registered" } : { username: "Username is taken :/" };
+      const errors =
+        user.email === email
+          ? { email: "Email is already registered" }
+          : { username: "Username is taken :/" };
       //maybe we can send back usernames that are available!!
-      return res.status(400).json({ message: `Hol' up buddy ${Object.values(errors)[0]}`, errors: errors });
+      return res.status(400).json({
+        message: `Hol' up buddy ${Object.values(errors)[0]}`,
+        errors: errors,
+      });
     }
 
     user = new User({
-      username, email, password, displayName
+      username,
+      email,
+      password,
+      displayName,
     });
 
     await user.save();
@@ -144,7 +157,7 @@ app.post("/api/register", async (req, res) => {
 
 app.get("/api/protected/userData", verifyToken, (req, res) => {
   res.json({ message: "Hello there user!" });
-})
+});
 
 app.get("/api/movie/:id", (req, res, next) => {
   const ID = req.params.id;
@@ -162,17 +175,33 @@ app.get("/api/movie/:id", (req, res, next) => {
 app.get("/api/searchmovie/:search", async (req, res) => {
   try {
     const search = encodeURIComponent(req.params.search);
-    console.log(search);
     const url = `https://api.themoviedb.org/3/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
 
     fetch(url, options)
       .then((res) => res.json())
       .then((json) => {
-        res.json(json), console.log(json);
+        res.json(json);
       })
       .catch((err) => console.log(err));
   } catch (err) {
     res.status(506).json({ message: "Something went wrong" });
+  }
+});
+
+app.get("/api/movies/:genre", async (req, res) => {
+  const ID = req.params.genre;
+  try {
+    fetch(
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${ID}`,
+      options
+    )
+      .then((res) => res.json())
+      .then((json) => {
+        res.json(json);
+      })
+      .catch((err) => console.error(err));
+  } catch (error) {
+    res.status(506).json({ message: "something wrong" });
   }
 });
 

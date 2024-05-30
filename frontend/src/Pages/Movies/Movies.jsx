@@ -1,24 +1,42 @@
-const API = "eaf21c511d98e9df826254024c44dcce";
+import { useState, useEffect, Fragment } from "react";
 import { Carousel, SideBar } from "../../Components";
-import { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
-export const Movies = () => {
-  const [data, setData] = useState([]);
+import { useParams } from "react-router-dom";
 
+export const Movies = () => {
+  const [categoryName, setCategoryName] = useState("Popular ");
+  const genre = useParams();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const fetchingPopMovies = async () => {
-      const data = await fetch(
-        ` https://api.themoviedb.org/3/movie/popular?api_key=${API}`
-      );
+    const fetchingMoviesByGenre = async () => {
+      let url = "/api/movies/popular";
+      if (genre.genre) {
+        url = `/api/movies/${genre.genre}`;
+      }
+      const data = await fetch(`${url}`);
       const response = await data.json();
       setData(response.results);
+      setLoading(false);
     };
-    fetchingPopMovies();
-  }, []);
+    fetchingMoviesByGenre();
+  }, [genre]);
+
   return (
-    <div>
-      <Carousel items={data} categoryName={"Popular Movies"} />
-      <SideBar />
+    <div className="moviespage-container">
+      {loading ? (
+        <p>loaing</p>
+      ) : (
+        <Fragment>
+          <div>
+            <h1>{categoryName}</h1>
+            {data.map((item, index) => {
+              console.log(item);
+              return <p key={index}>{item.title}</p>;
+            })}
+          </div>
+          <SideBar setCategoryName={setCategoryName} />
+        </Fragment>
+      )}
     </div>
   );
 };
