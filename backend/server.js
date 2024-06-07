@@ -47,6 +47,28 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+//middleware for validating the user
+const validateUser = async (req, res, next) => {
+  const { userId } = req.params;
+  const user = req.user;
+
+  if (user.userId === userId) {
+    try {
+      const userData = await User.findById(userId);
+      if (!userData) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      req.userData = userData;
+      next();
+    } catch (error) {
+      return res.status(500).json({ message: 'Server error', error });
+    }
+  } else {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+};
+
+
 const app = express();
 const PORT = 6969;
 app.use(express.json());
@@ -174,7 +196,7 @@ app.post("/api/register", async (req, res) => {
     });
 
     await user.save();
-    const { _id: userId, username } = user;
+    const { _id: userId } = user;
     const token = generateToken(user);
 
     res.status(201).json({ token: token, user: { userId, username } });
@@ -184,25 +206,29 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-/* app.get("/api/protected/userData", verifyToken, (req, res) => {
-
-}) */
-
-app.get("/api/user/:userId", verifyToken, async (req, res) => {
-
-  const { userId } = req.params;
-  const user = req.user;
 
 
-  if (user.userId === userId) {
-    console.log("user", user)
-    const userData = await User.findById(userId)
-    const { _id, username, email, displayName } = userData
-    res.json({ user: { userId: _id, username, email, displayName } });
-  } else {
-    res.status(401).json({ message: "Unauthorized" });
+//sending the profile data
+app.get('/api/user/:userId', verifyToken, validateUser, async (req, res) => {
+  const userData = req.userData;
+  const { _id, username, email, displayName } = userData;
+  res.json({ user: { userId: _id, username, email, displayName } })
+});
+
+app.get('/api/user/:userId/change-password', verifyToken, validateUser, async (req, res) => {
+
+  const userData = req.userData;
+
+  const { currentPassword, newPassword } = req.body;
+  const correctPassword = await userData.comparePassword(currentPassword);
+
+  if (!correctPassword) {
+    return res.status(401).json({ message: "Invalid Credentials", errors: { message: "The given password is incorrect" } });
   }
 
+  userData.password = newPassword;
+  await userData.save();
+  res.json({ message: "Password changed successfully" });
 })
 
 

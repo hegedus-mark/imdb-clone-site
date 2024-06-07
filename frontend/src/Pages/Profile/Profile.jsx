@@ -1,5 +1,13 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
+
+import { changePassword } from "../../Services";
 import { useFetchData, useAuth } from "../../Hooks";
+import { ChangePasswordForm } from "../../Components";
+
+const confirmPassword = (newPassword, confirmNewPassword) => {
+  return newPassword === confirmNewPassword;
+};
 
 export const Profile = () => {
   const { userId } = useParams();
@@ -11,8 +19,30 @@ export const Profile = () => {
     null,
     token
   );
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
-  console.log("received_data", data);
+  const changePassword = async (
+    newPassword,
+    confirmNewPassword,
+    currentPassword
+  ) => {
+    if (!confirmPassword(newPassword, confirmNewPassword)) {
+      alert("Passwords do not match");
+      return;
+    }
+    const response = await changePassword(
+      newPassword,
+      currentPassword,
+      userId,
+      token
+    );
+    console.log(response);
+  };
+
+  let user;
+  if (data) {
+    user = data.user;
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -22,17 +52,29 @@ export const Profile = () => {
     return <div>{error.message}</div>;
   }
 
-  const { user } = data;
-
   return (
     <div>
       <h1>Profile</h1>
-      {data && (
-        <>
-          <p>{user.username}</p>
-          <p>{user.email}</p>
-          <p>{user.displayName}</p>
-        </>
+      {user && (
+        <div>
+          <div>
+            <p>Username: {user.username}</p>
+            <p>Email: {user.email}</p>
+            <p>DisplayName: {user.displayName}</p>
+          </div>
+          <div>
+            {!showChangePassword ? (
+              <button onClick={() => setShowChangePassword(true)}>
+                Change Password
+              </button>
+            ) : (
+              <ChangePasswordForm
+                setShowChangePassword={setShowChangePassword}
+                changePassword={changePassword}
+              />
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

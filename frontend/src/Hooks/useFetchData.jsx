@@ -11,6 +11,7 @@ export const useFetchData = (
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
+  //TODO: Rewrite it so that it will only set data if response is ok
   const fetchData = (url, httpMethod, dataToSend) => {
     setLoading(true);
     fetch(url, {

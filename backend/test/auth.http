@@ -2,10 +2,10 @@ POST http://localhost:6969/api/register/
 Content-Type: application/json
 
 {
-  "username": "pityu",
+  "username": "pityu2",
   "displayName": "Pisty Pisty",
   "password": "pityu",
-  "email": "pityu@gmail.com"
+  "email": "pityu2@gmail.com"
 }
 ###
 
@@ -21,10 +21,16 @@ Content-Type: application/json
 
 //insert the actual token you get from the login above!
 GET http://localhost:6969/api/user/66572134e7ef89d1dceae0a5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU3MjEzNGU3ZWY4OWQxZGNlYWUwYTUiLCJ1c2VybmFtZSI6IlBpc3R5IiwiaWF0IjoxNzE3NzY2OTIzLCJleHAiOjE3MTc3NzA1MjN9.mSNXkwkfgDNCmv5DjitEyOv_AnI3OpbAR1JJyOk_y9Y
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU3MjEzNGU3ZWY4OWQxZGNlYWUwYTUiLCJ1c2VybmFtZSI6IlBpc3R5IiwiaWF0IjoxNzE3NzkzNDg5LCJleHAiOjE3MTc3OTcwODl9.-qcF-WuWXYG00x250D31TkWiGI5Az1KzBmi3036c-Qk
 
 ###
-GET http://localhost:6969/api/movies/popular
+GET http://localhost:6969/api/user/66572134e7ef89d1dceae0a5/change-password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU3MjEzNGU3ZWY4OWQxZGNlYWUwYTUiLCJ1c2VybmFtZSI6IlBpc3R5IiwiaWF0IjoxNzE3NzkzMjg4LCJleHAiOjE3MTc3OTY4ODh9.RTdDeuvCnxqCaNvtRP-Pzh4OYtgIkhfGrJUBQ3nkw1Q
+Content-Type: application/json
+
+{
+  "currentPassword": "pityu",
+  "newPassword": "pityu"
+}
 
 ###
