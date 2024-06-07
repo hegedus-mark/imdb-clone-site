@@ -17,7 +17,8 @@ const options = {
 };
 
 //secret key for jwt
-const secretKey = crypto.randomBytes(32).toString('hex');
+/* const secretKey = crypto.randomBytes(32).toString('hex'); */
+const secretKey = "mysecretkey";
 console.log('Secret Key:', secretKey);
 
 // jwt token for authentication
@@ -50,6 +51,7 @@ const app = express();
 const PORT = 6969;
 app.use(express.json());
 
+// query parameters
 app.get("/api/movies/popular", (req, res) => {
   const url = `${baseUrl}/popular?language=en-US&page=1`;
 
@@ -74,6 +76,7 @@ app.get("/api/movies/nowplaying", (req, res) => {
     });
 });
 
+//todo /api/movies/:movieId/trailer/
 app.get("/api/trailer/:id", (req, res) => {
   const ID = req.params.id;
   const url = `${baseUrl}/${ID}/videos?language=en-US';`;
@@ -100,6 +103,7 @@ app.get("/api/movie/:id", (req, res, next) => {
     });
 });
 
+//Todo 1 endpoint for these!
 app.get("/api/searchmovie/:search", async (req, res) => {
   try {
     const search = encodeURIComponent(req.params.search);
@@ -138,8 +142,9 @@ app.post("/api/login", async (req, res) => {
     //generating that fancy JWT token
     const token = generateToken(user);
     console.log(token);
+    const { _id: userId, username } = user;
 
-    res.json({ token });
+    res.json({ token: token, user: { userId, username } });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Oopsie daisy, tiny server problemo" });
@@ -155,7 +160,7 @@ app.post("/api/register", async (req, res) => {
     let user = await User.findOne({
       $or: [
         { email: email },
-        { username: username } // or any other condition
+        { username: username }
       ]
     });
     if (user) {
@@ -169,9 +174,10 @@ app.post("/api/register", async (req, res) => {
     });
 
     await user.save();
+    const { _id: userId, username } = user;
     const token = generateToken(user);
 
-    res.status(201).json({ token });
+    res.status(201).json({ token: token, user: { userId, username } });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Oopsie daisy, tiny server problemo" });
@@ -181,6 +187,24 @@ app.post("/api/register", async (req, res) => {
 /* app.get("/api/protected/userData", verifyToken, (req, res) => {
 
 }) */
+
+app.get("/api/user/:userId", verifyToken, async (req, res) => {
+
+  const { userId } = req.params;
+  const user = req.user;
+
+
+  if (user.userId === userId) {
+    console.log("user", user)
+    const userData = await User.findById(userId)
+    const { _id, username, email, displayName } = userData
+    res.json({ user: { userId: _id, username, email, displayName } });
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+
+})
+
 
 app.get("/api/protected/userData", verifyToken, (req, res) => {
   console.log(req.user)

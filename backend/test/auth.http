@@ -2,10 +2,10 @@ POST http://localhost:6969/api/register/
 Content-Type: application/json
 
 {
-  "username": "Pisty",
+  "username": "pityu",
   "displayName": "Pisty Pisty",
-  "password": "IAmPisty",
-  "email": "pisty@gmail.com"
+  "password": "pityu",
+  "email": "pityu@gmail.com"
 }
 ###
 
@@ -19,9 +19,12 @@ Content-Type: application/json
 }
 ###
 
+//insert the actual token you get from the login above!
+GET http://localhost:6969/api/user/66572134e7ef89d1dceae0a5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU3MjEzNGU3ZWY4OWQxZGNlYWUwYTUiLCJ1c2VybmFtZSI6IlBpc3R5IiwiaWF0IjoxNzE3NzY2OTIzLCJleHAiOjE3MTc3NzA1MjN9.mSNXkwkfgDNCmv5DjitEyOv_AnI3OpbAR1JJyOk_y9Y
 
 
-
+###
 GET http://localhost:6969/api/movies/popular
 
 ###

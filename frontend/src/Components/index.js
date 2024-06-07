@@ -7,3 +7,5 @@ export * from "./SignUp/SignUp";
 export * from "./Result/Result";
 export * from "./SignUp/SignUp";
 export * from "./contexts/AuthContext/AuthContext"
+export * from "./PrivateRoute/PrivateRoute";
+export * from "./GuestOnlyRoute/GuestOnlyRoute"

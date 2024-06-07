@@ -5,7 +5,7 @@ export const useFetchData = (
   url,
   httpMethod,
   dataToSend = null,
-  headers = { "Content-Type": "application/json" }
+  authToken = null
 ) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,10 @@ export const useFetchData = (
     setLoading(true);
     fetch(url, {
       method: httpMethod,
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
       body: dataToSend,
     })
       .then((response) => response.json())
