@@ -14,7 +14,7 @@ export const Profile = () => {
   const { token } = useAuth();
   const { data, loading, error } = useFetchData(
     true,
-    `/api/user/${userId}`,
+    `/api/user/${userId}/profile`,
     "GET",
     null,
     token

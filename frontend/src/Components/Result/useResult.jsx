@@ -4,7 +4,7 @@ import { useFetchData } from "../../Hooks";
 export const useResult = (movie, setSearch) => {
   const baseImageUrl = "https://image.tmdb.org/t/p";
   const navigate = useNavigate();
-  const { data } = useFetchData(true, `/api/movie/${movie.id}`, "GET");
+  const { data } = useFetchData(true, `/api/movies/searchresult/${movie.id}`, "GET");
 
   const resultMovieClickHandler = (id) => {
     console.log("clicked", movie.id);

@@ -1,4 +1,6 @@
-POST http://localhost:6969/api/register/
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYzNzQ3Njg5NTVkMGVkYzhjMWE2ZTIiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxNzg1MjEyMiwiZXhwIjoxNzE3ODU1NzIyfQ.anM1f2yvwsK3nrjGXEk_y9tATIiDfDNwmu1QquNyz7U
+
+POST http://localhost:6969/api/auth/register/
 Content-Type: application/json
 
 {
@@ -9,7 +11,7 @@ Content-Type: application/json
 }
 ###
 
-POST http://localhost:6969/api/login/
+POST http://localhost:6969/api/auth/login/
 Content-Type: application/json
 
 {
@@ -20,12 +22,12 @@ Content-Type: application/json
 ###
 
 //insert the actual token you get from the login above!
-GET http://localhost:6969/api/user/666374768955d0edc8c1a6e2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYzNzQ3Njg5NTVkMGVkYzhjMWE2ZTIiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxNzc5Mzk0NywiZXhwIjoxNzE3Nzk3NTQ3fQ.25TxNAYc8AuuLMVnnYxRj1LXEk4diayKMcxpwoX8AP8
+GET http://localhost:6969/api/user/666374768955d0edc8c1a6e2/profile
+Authorization: Bearer {{token}}
 
 ###
-GET http://localhost:6969/api/user/666374768955d0edc8c1a6e2/change-password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYzNzQ3Njg5NTVkMGVkYzhjMWE2ZTIiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxNzc5Mzk0NywiZXhwIjoxNzE3Nzk3NTQ3fQ.25TxNAYc8AuuLMVnnYxRj1LXEk4diayKMcxpwoX8AP8
+PUT http://localhost:6969/api/user/666374768955d0edc8c1a6e2/change-password
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -34,3 +36,6 @@ Content-Type: application/json
 }
 
 ###
+
+GET http://localhost:6969/api/user/666374768955d0edc8c1a6e2/watchlist
+Authorization: Bearer {{token}}

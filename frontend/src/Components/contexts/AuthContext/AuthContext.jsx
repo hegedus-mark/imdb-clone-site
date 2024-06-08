@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   const authoriseUser = async (endpoint, formFields) => {
     try {
-      const response = await fetch(`/api/${endpoint}`, {
+      const response = await fetch(`/api/auth/${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
