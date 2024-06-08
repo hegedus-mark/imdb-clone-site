@@ -13,19 +13,19 @@ POST http://localhost:6969/api/login/
 Content-Type: application/json
 
 {
-  "username": "Pisty",
-  "password": "IAmPisty",
-  "email": "pisty@gmail.com"
+  "username": "pityu2",
+  "password": "pityu",
+  "email": "pityu2@gmail.com"
 }
 ###
 
 //insert the actual token you get from the login above!
-GET http://localhost:6969/api/user/66572134e7ef89d1dceae0a5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU3MjEzNGU3ZWY4OWQxZGNlYWUwYTUiLCJ1c2VybmFtZSI6IlBpc3R5IiwiaWF0IjoxNzE3NzkzNDg5LCJleHAiOjE3MTc3OTcwODl9.-qcF-WuWXYG00x250D31TkWiGI5Az1KzBmi3036c-Qk
+GET http://localhost:6969/api/user/666374768955d0edc8c1a6e2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYzNzQ3Njg5NTVkMGVkYzhjMWE2ZTIiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxNzc5Mzk0NywiZXhwIjoxNzE3Nzk3NTQ3fQ.25TxNAYc8AuuLMVnnYxRj1LXEk4diayKMcxpwoX8AP8
 
 ###
-GET http://localhost:6969/api/user/66572134e7ef89d1dceae0a5/change-password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU3MjEzNGU3ZWY4OWQxZGNlYWUwYTUiLCJ1c2VybmFtZSI6IlBpc3R5IiwiaWF0IjoxNzE3NzkzMjg4LCJleHAiOjE3MTc3OTY4ODh9.RTdDeuvCnxqCaNvtRP-Pzh4OYtgIkhfGrJUBQ3nkw1Q
+GET http://localhost:6969/api/user/666374768955d0edc8c1a6e2/change-password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYzNzQ3Njg5NTVkMGVkYzhjMWE2ZTIiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxNzc5Mzk0NywiZXhwIjoxNzE3Nzk3NTQ3fQ.25TxNAYc8AuuLMVnnYxRj1LXEk4diayKMcxpwoX8AP8
 Content-Type: application/json
 
 {

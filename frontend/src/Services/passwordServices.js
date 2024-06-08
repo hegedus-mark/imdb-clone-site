@@ -1,4 +1,4 @@
-export const changePassword = async (newPassword, oldPassword, userId, token) => {
+export const changePassword = async (newPassword, currentPassword, userId, token) => {
 
   const response = await fetch(`/api/user/${userId}/change-password`, {
     method: "POST",
@@ -6,10 +6,10 @@ export const changePassword = async (newPassword, oldPassword, userId, token) =>
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ newPassword: newPassword, oldPassword: oldPassword }),
+    body: JSON.stringify({ newPassword: newPassword, currentPassword: currentPassword }),
   });
-  const data = await response.json();
-  console.log("data received", data);
-  return data;
+/*   const data = await response.json(); */
+/*   console.log("data received", data); */
+  return response;
 
 }

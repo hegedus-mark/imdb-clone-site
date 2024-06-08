@@ -21,7 +21,7 @@ export const Profile = () => {
   );
   const [showChangePassword, setShowChangePassword] = useState(false);
 
-  const changePassword = async (
+  const handlePasswordSubmit = async (
     newPassword,
     confirmNewPassword,
     currentPassword
@@ -36,6 +36,13 @@ export const Profile = () => {
       userId,
       token
     );
+
+    if (response.ok) {
+      alert("Password changed successfully");
+      setShowChangePassword(false);
+    } else{
+      alert(response.statusText);
+    }
     console.log(response);
   };
 
@@ -70,7 +77,7 @@ export const Profile = () => {
             ) : (
               <ChangePasswordForm
                 setShowChangePassword={setShowChangePassword}
-                changePassword={changePassword}
+                changePassword={handlePasswordSubmit}
               />
             )}
           </div>

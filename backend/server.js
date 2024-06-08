@@ -215,7 +215,7 @@ app.get('/api/user/:userId', verifyToken, validateUser, async (req, res) => {
   res.json({ user: { userId: _id, username, email, displayName } })
 });
 
-app.get('/api/user/:userId/change-password', verifyToken, validateUser, async (req, res) => {
+app.post('/api/user/:userId/change-password', verifyToken, validateUser, async (req, res) => {
 
   const userData = req.userData;
 
