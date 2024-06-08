@@ -5,7 +5,7 @@ const { Schema, model } = mongoose;
 const RatingSchema = Schema({
   userId: { type: String, required: true },
   movieId: { type: Number, required: true },
-  rate: { type: Number },
+  rating: { type: Number, required: true },
 });
 
 export default model("Rating", RatingSchema);

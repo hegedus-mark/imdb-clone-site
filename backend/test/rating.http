@@ -1,0 +1,12 @@
+POST http://localhost:6969/api/ratings
+Content-Type: application/json
+
+{
+  "userId": "222222222222",
+  "movieId": "333",
+  "rating": 3
+}
+###
+
+GET http://localhost:6969/api/ratings/11111
+Content-Type: application/json

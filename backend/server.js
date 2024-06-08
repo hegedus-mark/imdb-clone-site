@@ -132,6 +132,28 @@ app.get("/api/ratings", async (req, res) => {
   res.json(ratings);
 });
 
+app.get("/api/ratings/:movieId", async (req, res) => {
+  try {
+    const movieId = req.params.movieId;
+    const ratings = await Rating.find({ movieId: movieId });
+    res.json(ratings);
+  } catch (err) {
+    res.status(506).json({ message: "Something went wrong" });
+  }
+});
+
+app.post("/api/ratings/", (req, res) => {
+  try {
+    const movieRating = req.body;
+    Rating.create(movieRating).then((rating) => {
+      rating.save();
+      res.json({ message: "Rating was saved" });
+    });
+  } catch (err) {
+    res.status(506).json({ message: "Something went wrong" });
+  }
+});
+
 //--------------------------------AUTHORISATION -------------------------------
 app.post("/api/login", async (req, res) => {
   //if the user doesn't have email we should ask him to register!
