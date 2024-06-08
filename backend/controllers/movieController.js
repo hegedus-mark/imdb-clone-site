@@ -1,13 +1,13 @@
 import { fetchMovies } from "../utils/fetchMovies.js";
 import { saveMoviesToDB } from "../utils/saveMovies.js";
-import { MOVIE_BASE_URL, TMDB_OPTIONS } from "../config/tmdbConfig.js";
+import { BASE_URL, TMDB_OPTIONS } from "../config/tmdbConfig.js";
 
 
 
 
 export const getMovies = async (req, res) => {
   const { category } = req.query;
-  const url = `${MOVIE_BASE_URL}/movie/${category}?language=en-US&page=1`;
+  const url = `${BASE_URL}/movie/${category}?language=en-US&page=1`;
   try {
     const movies = await fetchMovies(url, TMDB_OPTIONS);
     await saveMoviesToDB(movies);
@@ -19,7 +19,7 @@ export const getMovies = async (req, res) => {
 
 export const getMovieTrailer = async (req, res) => {
   const ID = req.params.id;
-  const url = `${MOVIE_BASE_URL}/movie/${ID}/videos?language=en-US`;
+  const url = `${BASE_URL}/movie/${ID}/videos?language=en-US`;
   try {
     const response = await fetch(url, TMDB_OPTIONS);
     const json = await response.json();
@@ -32,7 +32,7 @@ export const getMovieTrailer = async (req, res) => {
 export const getMovie = async (req, res) => {
   const { saveMovie = false } = req.query;
   const ID = req.params.id;
-  const url = `${MOVIE_BASE_URL}/movie/${ID}`;
+  const url = `${BASE_URL}/movie/${ID}`;
   try {
     const response = await fetch(url, TMDB_OPTIONS);
     const movie = await response.json();
@@ -47,7 +47,7 @@ export const getMovie = async (req, res) => {
 
 export const searchMovie = async (req, res) => {
   const search = encodeURIComponent(req.params.search);
-  const url = `${MOVIE_BASE_URL}/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
+  const url = `${BASE_URL}/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
   try {
     const movies = await fetchMovies(url, TMDB_OPTIONS);
     res.json({ results: movies });
