@@ -22,10 +22,8 @@ const secretKey = crypto.randomBytes(32).toString("hex");
 console.log("Secret Key:", secretKey);
 
 // jwt token for authentication
-const generateToken = (user) => {
-  return jwt.sign({ userId: user._id, username: user.username }, secretKey, {
-    expiresIn: "1h",
-  });
+const generateToken = ({ _id, username }) => {
+  return jwt.sign({ userId: _id, username }, secretKey, { expiresIn: "1h" });
 };
 
 //verification middleware
@@ -223,7 +221,12 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
+/* app.get("/api/protected/userData", verifyToken, (req, res) => {
+
+}) */
+
 app.get("/api/protected/userData", verifyToken, (req, res) => {
+  console.log(req.user);
   console.log(req.user);
   res.json({ message: "Hello there user!" });
 });
