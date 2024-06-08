@@ -30,29 +30,20 @@ export const getMovieTrailer = async (req, res) => {
 };
 
 export const getMovie = async (req, res) => {
+  const { saveMovie = false } = req.query;
   const ID = req.params.id;
   const url = `${MOVIE_BASE_URL}/movie/${ID}`;
   try {
     const response = await fetch(url, TMDB_OPTIONS);
     const movie = await response.json();
-    await saveMoviesToDB(movie);
+    if (saveMovie) await saveMoviesToDB(movie);
     res.json(movie);
   } catch (err) {
     res.status(506).json({ message: "Failed to fetch movie" });
   }
 };
 
-export const getMovieAsSearchResult = async (req, res) => {
-  const ID = req.params.id;
-  const url = `${MOVIE_BASE_URL}/movie/${ID}`;
-  try {
-    const response = await fetch(url, TMDB_OPTIONS);
-    const movie = await response.json();
-    res.json(movie);
-  } catch (err) {
-    res.status(506).json({ message: "Failed to fetch movie" });
-  }
-};
+
 
 export const searchMovie = async (req, res) => {
   const search = encodeURIComponent(req.params.search);

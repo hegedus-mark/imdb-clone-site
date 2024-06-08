@@ -9,7 +9,7 @@ export const useMoviePage = () => {
   const { id } = useParams();
   const { data, loading, error } = useFetchData(
     true,
-    `/api/movies/${id}`,
+    `/api/movies/${id}?saveMovie=true`,
     "GET"
   );
   const {
