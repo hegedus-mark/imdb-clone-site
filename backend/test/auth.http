@@ -25,12 +25,15 @@ Content-Type: application/json
 }
 ###
 
+
+
 //getting the user profile Data
 GET http://localhost:6969/api/user/{{userId}}/profile
 Authorization: Bearer {{token}}
 
-//changing password
 ###
+
+//changing password
 PUT http://localhost:6969/api/user/{{userId}}/change-password
 Authorization: Bearer {{token}}
 Content-Type: application/json
