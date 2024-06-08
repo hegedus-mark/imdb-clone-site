@@ -1,9 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
-import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import { PASSWORD, USERNAME, CLUSTER, ACCESS_TOKEN } from "./sensitiveData.js";
 import User from "./model/User.js";
+import Rating from "./model/Rating.js";
 mongoose.connect(
   `mongodb+srv://${USERNAME}:${PASSWORD}@${CLUSTER}.mongodb.net/freestyleMERN`
 );
@@ -17,12 +18,14 @@ const options = {
 };
 
 //secret key for jwt
-const secretKey = crypto.randomBytes(32).toString('hex');
-console.log('Secret Key:', secretKey);
+const secretKey = crypto.randomBytes(32).toString("hex");
+console.log("Secret Key:", secretKey);
 
 // jwt token for authentication
 const generateToken = (user) => {
-  return jwt.sign({ userId: user._id, username: user.username }, secretKey, { expiresIn: '1h' });
+  return jwt.sign({ userId: user._id, username: user.username }, secretKey, {
+    expiresIn: "1h",
+  });
 };
 
 //verification middleware
@@ -30,14 +33,14 @@ const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(401).json({ message: "No token provided" });
   }
 
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(" ")[1];
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ message: 'Invalid token' });
+      return res.status(401).json({ message: "Invalid token" });
     }
 
     req.user = decoded;
@@ -120,18 +123,30 @@ app.listen(PORT, () => {
   console.log(`The server is running on port: ${PORT}`);
 });
 
+//--------------------------------RATING -------------------------------
+
+app.get("/api/ratings", async (req, res) => {
+  const ratings = await Rating.find().catch((err) =>
+    res.status(506).json({ message: "Something went wrong" })
+  );
+  res.json(ratings);
+});
 
 //--------------------------------AUTHORISATION -------------------------------
 app.post("/api/login", async (req, res) => {
-
   //if the user doesn't have email we should ask him to register!
   try {
     const { email, password } = req.body;
-    console.log("credentials", email, password)
+    console.log("credentials", email, password);
 
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ message: "Invalid Credentials", errors: { message: "Either the password or the email is incorrect!!!" } });
+      return res.status(401).json({
+        message: "Invalid Credentials",
+        errors: {
+          message: "Either the password or the email is incorrect!!!",
+        },
+      });
     }
 
     //generating that fancy JWT token
@@ -143,28 +158,37 @@ app.post("/api/login", async (req, res) => {
     console.log(error);
     res.status(500).json({ message: "Oopsie daisy, tiny server problemo" });
   }
-})
+});
 
 app.post("/api/register", async (req, res) => {
   const { username, email, password, displayName } = req.body;
 
-  console.log(username, email, password)
+  console.log(username, email, password);
 
   try {
     let user = await User.findOne({
       $or: [
         { email: email },
-        { username: username } // or any other condition
-      ]
+        { username: username }, // or any other condition
+      ],
     });
     if (user) {
-      const errors = user.email === email ? { email: "Email is already registered" } : { username: "Username is taken :/" };
+      const errors =
+        user.email === email
+          ? { email: "Email is already registered" }
+          : { username: "Username is taken :/" };
       //maybe we can send back usernames that are available!!
-      return res.status(400).json({ message: `Hol' up buddy ${Object.values(errors)[0]}`, errors: errors });
+      return res.status(400).json({
+        message: `Hol' up buddy ${Object.values(errors)[0]}`,
+        errors: errors,
+      });
     }
 
     user = new User({
-      username, email, password, displayName
+      username,
+      email,
+      password,
+      displayName,
     });
 
     await user.save();
@@ -178,6 +202,6 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.get("/api/protected/userData", verifyToken, (req, res) => {
-  console.log(req.user)
+  console.log(req.user);
   res.json({ message: "Hello there user!" });
-})
+});
