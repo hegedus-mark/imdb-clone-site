@@ -1,22 +1,31 @@
 import { useNavigate } from "react-router-dom";
+
 import "./style.scss";
 
-export const MovieCard = ({ detailedMovieData }) => {
+export const MovieCard = ({
+  detailedMovieData,
+  inWatchlist,
+  watchlistHandler,
+}) => {
   const baseImageUrl = "https://image.tmdb.org/t/p";
   const navigate = useNavigate();
-  const watchListBtnHandler = () => {
-    console.log("Szevasz");
-  };
 
   const posterClickHandler = () => {
     navigate(`/movie/${detailedMovieData.id}`);
   };
 
+  const handleRibbonClick = (movie) => {
+    watchlistHandler(movie);
+  };
+
   return (
     <div className="movie-card">
       <div className="poster">
-        <button className="ribbon-btn" onClick={watchListBtnHandler}>
-          +
+        <button
+          className="ribbon-btn"
+          onClick={() => handleRibbonClick(detailedMovieData)}
+        >
+          {inWatchlist ? "-" : "+"}
         </button>
         <img
           onClick={posterClickHandler}

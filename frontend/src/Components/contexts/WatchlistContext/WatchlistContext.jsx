@@ -3,23 +3,34 @@ import { useAuth } from "../../../Hooks";
 
 export const WatchlistContext = createContext({
   watchList: [],
-  addToWatchList: () => null,
-  removeFromWatchList: () => null,
+  addToWatchList: async () => null,
+  removeFromWatchList: async () => null,
   loading: true,
-  fetchWatchList: () => null,
+  fetchWatchList: async () => null,
 });
 
 const fetchProtectedData = async (url, method, token) => {
+  console.log(`Starting request to ${url} with method ${method}`);
+  const startTime = performance.now();
+  
   const response = await fetch(url, {
     method: method,
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  
+  const connectTime = performance.now();
+  console.log(`Connected to ${url} in ${connectTime - startTime}ms`);
+  
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
+  
   const data = await response.json();
+  const endTime = performance.now();
+  console.log(`Received response from ${url} in ${endTime - startTime}ms`);
+  
   return data;
 };
 
@@ -27,6 +38,7 @@ export const WatchlistProvider = ({ children }) => {
   const [watchList, setWatchList] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token, user } = useAuth();
+
 
   useEffect(() => {
     if (!user) return;
@@ -49,26 +61,30 @@ export const WatchlistProvider = ({ children }) => {
 
 
   const addToWatchList = async (movie) => {
+    setLoading(true);
     try {
       await fetchProtectedData(
-        `/api/user/${user.id}/watchlist/${movie.id}`,
+        `/api/user/${user.userId}/watchlist/${movie.id}`,
         "POST",
         token
       );
       setWatchList([...watchList, movie]);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
   };
 
   const removeFromWatchList = async (movie) => {
+    setLoading(true);
     try {
       await fetchProtectedData(
-        `/api/user/${user.id}/watchlist/${movie.id}`,
-        "POST",
+        `/api/user/${user.userId}/watchlist/${movie.id}`,
+        "DELETE",
         token
       );
       setWatchList(watchList.filter((m) => m.id !== movie.id));
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
