@@ -17,6 +17,7 @@ import { PrivateRoute } from "./Components";
 import { AuthProvider } from "./Components/contexts/AuthContext/AuthContext";
 import "./main.styles.scss";
 import { GuestOnlyRoute } from "./Components/GuestOnlyRoute/GuestOnlyRoute";
+import { WatchlistProvider } from "./Components/contexts/WatchlistContext/WatchlistContext";
 
 const routing = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ const routing = createBrowserRouter([
       },
       {
         path: "/auth",
-        element: <GuestOnlyRoute element={<AuthPage />}/>
+        element: <GuestOnlyRoute element={<AuthPage />} />,
       },
       {
         path: "/movie/:id",
@@ -66,7 +67,9 @@ const routing = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={routing} />
+      <WatchlistProvider>
+        <RouterProvider router={routing} />
+      </WatchlistProvider>
     </AuthProvider>
   </React.StrictMode>
 );
