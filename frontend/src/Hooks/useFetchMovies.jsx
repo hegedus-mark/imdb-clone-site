@@ -1,9 +1,4 @@
 import { useEffect, useState } from "react";
-import { useWatchlist } from "./useWatchlist";
-
-const getWatchListStatus = (movie, watchList) => {
-  return watchList.some((item) => item.tmdb_id === movie.id);
-};
 
 /**
  * Fetches data from multiple requests and updates the state with the results.
@@ -24,18 +19,11 @@ export const useFetchMovies = (requests) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
-  const { watchList } = useWatchlist();
-
   const fetchData = async (request) => {
     setLoading(true);
     try {
       const response = await fetch(request.url);
-      const jsonData = await response.json();
-      const movies = jsonData.results.map((movie) => ({
-        ...movie,
-        isInWatchList: getWatchListStatus(movie, watchList),
-      }));
-      console.log("movies", movies);
+      const movies = await response.json().then((data) => data.results);
       setData((prevData) => ({ ...prevData, [request.category]: movies }));
     } catch (error) {
       setError(error);

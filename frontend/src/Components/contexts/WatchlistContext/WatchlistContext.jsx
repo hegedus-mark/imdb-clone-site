@@ -12,25 +12,25 @@ export const WatchlistContext = createContext({
 const fetchProtectedData = async (url, method, token) => {
   console.log(`Starting request to ${url} with method ${method}`);
   const startTime = performance.now();
-  
+
   const response = await fetch(url, {
     method: method,
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  
+
   const connectTime = performance.now();
   console.log(`Connected to ${url} in ${connectTime - startTime}ms`);
-  
+
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
-  
+
   const data = await response.json();
   const endTime = performance.now();
   console.log(`Received response from ${url} in ${endTime - startTime}ms`);
-  
+
   return data;
 };
 
@@ -38,7 +38,6 @@ export const WatchlistProvider = ({ children }) => {
   const [watchList, setWatchList] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token, user } = useAuth();
-
 
   useEffect(() => {
     if (!user) return;
@@ -48,7 +47,8 @@ export const WatchlistProvider = ({ children }) => {
         "GET",
         token
       );
-      setWatchList(data.results);
+      setWatchList(data.results.map((m) => m.tmdb_id));
+
       setLoading(false);
       console.log("data received - watchlist", data);
     };
@@ -59,7 +59,6 @@ export const WatchlistProvider = ({ children }) => {
     }
   }, [user, token]);
 
-
   const addToWatchList = async (movie) => {
     setLoading(true);
     try {
@@ -68,7 +67,7 @@ export const WatchlistProvider = ({ children }) => {
         "POST",
         token
       );
-      setWatchList([...watchList, movie]);
+      setWatchList([...watchList, movie.id]);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -83,14 +82,19 @@ export const WatchlistProvider = ({ children }) => {
         "DELETE",
         token
       );
-      setWatchList(watchList.filter((m) => m.id !== movie.id));
+      setWatchList(watchList.filter((m) => m !== movie.id));
       setLoading(false);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const value = { watchList, addToWatchList, removeFromWatchList, loading };
+  const value = {
+    watchList,
+    addToWatchList,
+    removeFromWatchList,
+    loading,
+  };
 
   return (
     <WatchlistContext.Provider value={value}>

@@ -1,21 +1,25 @@
 import { useNavigate } from "react-router-dom";
 
+import { useWatchlist } from "../../Hooks";
 import "./style.scss";
 
-export const MovieCard = ({
-  detailedMovieData,
-  inWatchlist,
-  watchlistHandler,
-}) => {
+export const MovieCard = ({ detailedMovieData }) => {
   const baseImageUrl = "https://image.tmdb.org/t/p";
   const navigate = useNavigate();
+  const { addToWatchList, removeFromWatchList, watchList } = useWatchlist();
+
+  const inWatchList = watchList.includes(detailedMovieData.id);
 
   const posterClickHandler = () => {
     navigate(`/movie/${detailedMovieData.id}`);
   };
 
-  const handleRibbonClick = (movie) => {
-    watchlistHandler(movie);
+  const handleRibbonClick = async (movie) => {
+    if (!inWatchList) {
+      await addToWatchList(movie);
+    } else {
+      await removeFromWatchList(movie);
+    }
   };
 
   return (
@@ -25,7 +29,7 @@ export const MovieCard = ({
           className="ribbon-btn"
           onClick={() => handleRibbonClick(detailedMovieData)}
         >
-          {inWatchlist ? "-" : "+"}
+          {inWatchList ? "-" : "+"}
         </button>
         <img
           onClick={posterClickHandler}
