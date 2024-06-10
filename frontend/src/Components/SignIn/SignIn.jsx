@@ -1,10 +1,8 @@
-import { useContext, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 import { FormInput } from "../FormInput/FormInput";
-import { AuthContext } from "../contexts/AuthContext/AuthContext";
-import "./style.scss"
+import { useAuth, useToast } from "../../Hooks";
+import "./style.scss";
 
 const defaultFormFields = {
   email: "",
@@ -13,9 +11,9 @@ const defaultFormFields = {
 
 export const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const [error, setError] = useState({});
-  const {authoriseUser} = useContext(AuthContext)
-
+  const [formError, setFormError] = useState({});
+  const { authoriseUser } = useAuth();
+  const { showLoadingToast, updateToast } = useToast();
   const { email, password } = formFields;
 
   const resetFormField = () => {
@@ -30,30 +28,24 @@ export const SignIn = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const id = toast.loading("Please wait...", { containerId: "sign-up" });
+
+    showLoadingToast("Signing in...");
     const response = await authoriseUser("login", formFields);
+
     if (response.ok) {
       resetFormField();
-      toast.update(id, {
-        render: "Great Success!",
-        type: "success",
+      updateToast(response.message, "success", {
+        autoClose: 5000,
         isLoading: false,
-        containerId: "sign-up",
-        autoClose: 6000,
       });
     } else {
-      setError(response.errors);
-      toast.update(id, {
-        render: response.message,
-        type: "error",
+      updateToast(response.error.message, "error", {
+        autoClose: 5000,
         isLoading: false,
-        containerId: "sign-up",
-        autoClose: 6000,
       });
+      setFormError(response.error.formError);
     }
   };
-
-  const errorStyle = Object.keys(error).length ? true : false;
 
   return (
     <div className="sign-up-container">
@@ -67,7 +59,7 @@ export const SignIn = () => {
           required
           value={email}
           type="email"
-          error={error.message}
+          errorFields={formError.fields}
         />
         <FormInput
           label="Password"
@@ -76,8 +68,9 @@ export const SignIn = () => {
           required
           value={password}
           type="password"
-          errorStyle={errorStyle}
+          errorFields={formError.fields}
         />
+        <p className="error-message">{formError.message}</p>
         <div className="buttons-container">
           <button type="submit">Sign in</button>
           {/*     <Button type="button" onClick={signInWithGoogle} buttonType="google">
@@ -85,12 +78,6 @@ export const SignIn = () => {
           </Button> */}
         </div>
       </form>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        containerId={"sign-in"}
-      />
     </div>
   );
 };

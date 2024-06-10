@@ -11,7 +11,7 @@ const confirmPassword = (newPassword, confirmNewPassword) => {
 
 export const Profile = () => {
   const { userId } = useParams();
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const { data, loading, error } = useFetchData(
     true,
     `/api/user/${userId}/profile`,
@@ -40,7 +40,7 @@ export const Profile = () => {
     if (response.ok) {
       alert("Password changed successfully");
       setShowChangePassword(false);
-    } else{
+    } else {
       alert(response.statusText);
     }
     console.log(response);
@@ -81,6 +81,7 @@ export const Profile = () => {
               />
             )}
           </div>
+          <button onClick={() => logout()}>Logout</button>
         </div>
       )}
     </div>

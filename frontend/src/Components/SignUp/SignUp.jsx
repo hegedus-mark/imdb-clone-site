@@ -1,10 +1,8 @@
-import { useState, useContext } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 import { FormInput } from "../FormInput/FormInput";
-import { AuthContext } from "../contexts/AuthContext/AuthContext";
-import "./style.scss"
+import { useAuth, useToast } from "../../Hooks";
+import "./style.scss";
 
 const defaultFormFields = {
   displayName: "",
@@ -20,9 +18,10 @@ export const SignUp = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, username, email, password, confirmPassword } =
     formFields;
-  const [errors, setErrors] = useState({});
-  const {authoriseUser} = useContext(AuthContext)
-  console.log("errors", errors);
+  const [formError, setFormError] = useState({});
+  const [disabled, setDisabled] = useState(false);
+  const { authoriseUser } = useAuth();
+  const { showLoadingToast, updateToast } = useToast();
 
   const resetFormField = () => {
     setFormFields(defaultFormFields);
@@ -31,42 +30,37 @@ export const SignUp = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
+    setDisabled(false);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const newErrors = {};
+    setDisabled(true);
+
     if (password !== confirmPassword) {
       console.log("passwords no matchey matchey");
-      newErrors.confirmPassword = "Passwords do not match";
-      console.log("NewErrors", newErrors);
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+      setFormError({
+        message: "Passwords do not match",
+        fields: ["password", "confirmPassword"],
+      });
       return;
     }
 
-    const id = toast.loading("Please wait...", { containerId: "sign-up" });
+    showLoadingToast("Signing up...");
     const response = await authoriseUser("register", formFields);
     if (response.ok) {
       resetFormField();
-      toast.update(id, {
-        render: "Great Success!",
-        type: "success",
+      updateToast("Sign up successful", "success", {
+        autoClose: 5000,
         isLoading: false,
-        containerId: "sign-up",
-        autoClose: 6000,
       });
     } else {
-      setErrors({ ...newErrors, ...response.errors });
-      toast.update(id, {
-        render: response.message,
-        type: "error",
+      updateToast("Sign up failed", "error", {
+        autoClose: 5000,
         isLoading: false,
-        containerId: "sign-up",
-        autoClose: 6000,
       });
+
+      setFormError(response.error.formError);
     }
   };
 
@@ -74,7 +68,7 @@ export const SignUp = () => {
     <div className="sign-up-container">
       <h2>Don&apos;t have an account?</h2>
       <span>Sign up with your email and password</span>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} >
         <FormInput
           label="Display Name"
           onChange={handleChange}
@@ -82,6 +76,7 @@ export const SignUp = () => {
           required
           value={displayName}
           type="text"
+          errorFields={formError.fields}
         />
         <FormInput
           label="Username"
@@ -90,7 +85,7 @@ export const SignUp = () => {
           required
           value={username}
           type="text"
-          error={errors.username}
+          errorFields={formError.fields}
         />
         <FormInput
           label="Email"
@@ -99,7 +94,7 @@ export const SignUp = () => {
           required
           value={email}
           type="email"
-          error={errors.email}
+          errorFields={formError.fields}
         />
         <FormInput
           label="Password"
@@ -108,6 +103,7 @@ export const SignUp = () => {
           required
           value={password}
           type="password"
+          errorFields={formError.fields}
         />
         <FormInput
           label="Confirm Password"
@@ -116,21 +112,17 @@ export const SignUp = () => {
           required
           value={confirmPassword}
           type="password"
-          error={errors.confirmPassword}
+          errorFields={formError.fields}
         />
+
+        <p className="error-message">{formError.message}</p>
         <div className="buttons-container">
-          <button type="submit">Sign in</button>
+          <button type="submit" disabled={disabled}>Sign in</button>
           {/*     <Button type="button" onClick={signInWithGoogle} buttonType="google">
             Google Sign in
           </Button> */}
         </div>
       </form>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        containerId={"sign-up"}
-      />
     </div>
   );
 };

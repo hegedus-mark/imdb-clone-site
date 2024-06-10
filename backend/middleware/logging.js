@@ -6,3 +6,4 @@ export const timingMiddleware = (req, res, next) => {
   });
   next();
 };
+
