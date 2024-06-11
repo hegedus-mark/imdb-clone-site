@@ -31,3 +31,4 @@ export const useFetchData = (runOnLoad, url, httpMethod, dataToSend = null) => {
 
   return { data, loading, error, fetchData };
 };
+

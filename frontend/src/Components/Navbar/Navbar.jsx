@@ -4,21 +4,21 @@ export function NavBar() {
   return (
     <div>
       <ul className="navbar-container">
-        <li>
+        <button>
           <Link to="/newsfeed">News Feed</Link>
-        </li>
-        <li>
+        </button>
+        <button>
           <Link to="/movies">Movies</Link>
-        </li>
-        <li>
+        </button>
+        <button>
           <Link to="/friends">Friends</Link>
-        </li>
-        <li>
+        </button>
+        <button>
           <Link to="/my-list">My list</Link>
-        </li>
-        <li>
+        </button>
+        <button>
           <Link to="/auth">Sign in</Link>
-        </li>
+        </button>
       </ul>
     </div>
   );

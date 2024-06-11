@@ -27,12 +27,12 @@ export const Movies = () => {
         <p>loaing</p>
       ) : (
         <Fragment>
-          <div classname="movies-container">
+          <div className="movies-container">
             <h1>{categoryName}</h1>
             {data.map((item, index) => {
               return (
-                <div key={index} classname="movie-container">
-                  <MovieCard detailedMovieData={item} />;
+                <div key={index} className="movie-container">
+                  <MovieCard detailedMovieData={item} />
                 </div>
               );
             })}

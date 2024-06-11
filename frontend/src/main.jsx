@@ -86,7 +86,5 @@ const routing = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={routing} />
-  </React.StrictMode>
+  <RouterProvider router={routing} />
 );
