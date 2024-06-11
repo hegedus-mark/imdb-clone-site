@@ -7,6 +7,7 @@ export const Result = ({ movie, setSearch }) => {
     setSearch
   );
 
+ 
   return (
     <div
       className="search-result"
