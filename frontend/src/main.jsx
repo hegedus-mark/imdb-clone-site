@@ -30,7 +30,11 @@ const routing = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: "/movies",
+        path: "movies",
+        element: <Movies />,
+      },
+      {
+        path: "/movies/:genre",
         element: <Movies />,
       },
       {
@@ -44,6 +48,10 @@ const routing = createBrowserRouter([
       {
         path: "/profile/:userId",
         element: <PrivateRoute element={<Profile />} />,
+      },
+      {
+        path: "/movies/:genre",
+        element: <Movies />,
       },
       {
         path: "/friends",

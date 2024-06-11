@@ -41,3 +41,4 @@ export const useFetchData = (
 
   return { data, loading, error, fetchData };
 };
+

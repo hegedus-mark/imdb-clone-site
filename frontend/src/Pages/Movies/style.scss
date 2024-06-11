@@ -1,0 +1,13 @@
+.moviespage-container {
+  display: flex;
+  flex-direction: row;
+
+  .movies-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    .movie-container {
+      width: 100px;
+    }
+  }
+}
