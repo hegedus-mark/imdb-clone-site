@@ -9,14 +9,14 @@ export const useMoviePage = () => {
   const { id } = useParams();
   const { data, loading, error } = useFetchData(
     true,
-    `/api/movie/${id}`,
+    `/api/movies/${id}?saveMovie=true`,
     "GET"
   );
   const {
     data: videoData,
     loading: videoLoading,
     error: videoError,
-  } = useFetchData(true, `/api/trailer/${id}`, "GET");
+  } = useFetchData(true, `/api/movies/trailer/${id}`, "GET");
 
   useEffect(() => {
     if (videoData && videoData.results.length > 1) {

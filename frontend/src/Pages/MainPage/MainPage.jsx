@@ -5,14 +5,14 @@ import { useFetchData } from "../../Hooks/";
 export const MainPage = () => {
   const { data, error, loading } = useFetchData(
     true,
-    "/api/movies/popular",
+    "/api/movies?category=popular",
     "GET"
   );
   const {
     data: playData,
     error: playError,
     loading: playLoading,
-  } = useFetchData(true, "/api/movies/nowplaying", "GET");
+  } = useFetchData(true, "/api/movies?category=now_playing", "GET");
 
   return loading && playLoading ? (
     <h1>Please wait Loading</h1>

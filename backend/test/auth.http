@@ -1,27 +1,60 @@
-POST http://localhost:6969/api/register/
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY0Y2QyMTg4MjM4ZGQwZWFmMjk0MTQiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxNzg4MjE0NSwiZXhwIjoxNzE3ODg1NzQ1fQ.9dxNDJBrp-qYmF2qrJ1dMTdgAdDjXQZxEawnDna2RGQ
+
+@userId = 6664cd2188238dd0eaf29414
+
+//Register
+POST http://localhost:6969/api/auth/register/
 Content-Type: application/json
 
 {
-  "username": "Pisty",
+  "username": "pityu2",
   "displayName": "Pisty Pisty",
-  "password": "IAmPisty",
-  "email": "pisty@gmail.com"
+  "password": "pityu",
+  "email": "pityu2@gmail.com"
 }
 ###
 
-POST http://localhost:6969/api/login/
+//Login 
+POST http://localhost:6969/api/auth/login/
 Content-Type: application/json
 
 {
-  "username": "Pisty",
-  "password": "IAmPisty",
-  "email": "pisty@gmail.com"
+  "username": "pityu2",
+  "password": "pityu",
+  "email": "pityu2@gmail.com"
 }
 ###
 
 
 
-
-GET http://localhost:6969/api/movies/popular
+//getting the user profile Data
+GET http://localhost:6969/api/user/{{userId}}/profile
+Authorization: Bearer {{token}}
 
 ###
+
+//changing password
+PUT http://localhost:6969/api/user/{{userId}}/change-password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "currentPassword": "pityu",
+  "newPassword": "pityu"
+}
+
+###
+
+//Get watchlist
+GET http://localhost:6969/api/user/{{userId}}/watchlist
+Authorization: Bearer {{token}}
+
+###
+//add a movie to the watchlist
+POST http://localhost:6969/api/user/{{userId}}/watchlist/1041613
+Authorization: Bearer {{token}}
+
+###
+//remove a movie from the watchlist
+DELETE http://localhost:6969/api/user/{{userId}}/watchlist/1041613
+Authorization: Bearer {{token}}

@@ -1,0 +1,5 @@
+GET http://localhost:6969/api/movies?category=popular
+
+###
+
+GET http://localhost:6969/api/movies?category=now_playing

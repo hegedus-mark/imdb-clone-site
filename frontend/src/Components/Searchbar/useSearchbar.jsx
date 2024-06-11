@@ -9,7 +9,7 @@ export const useSearchbar = () => {
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (search) {
-        fetchData(`/api/searchmovie/${search}`, "GET");
+        fetchData(`/api/movies/search/${search}`, "GET");
       }
     }, 300);
     return () => {

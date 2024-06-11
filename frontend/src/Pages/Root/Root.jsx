@@ -1,8 +1,7 @@
-import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { NavBar, Searchbar } from "../../Components";
 
-export const GuestView = ({ isItLoggedIn }) => {
-  const location = useLocation();
+export const Root = () => {
   const navigate = useNavigate();
   return (
     <div className="main-container">
@@ -10,7 +9,7 @@ export const GuestView = ({ isItLoggedIn }) => {
         Guest view
       </h1>
       <NavBar />
-      {location.pathname !== "/auth" && <Searchbar />}
+      <Searchbar />
       <Outlet />
     </div>
   );
