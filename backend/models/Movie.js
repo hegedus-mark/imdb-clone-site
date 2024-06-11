@@ -17,4 +17,5 @@ const MovieSchema = new mongoose.Schema({
   adult: { type: Boolean },
 });
 
+
 export default mongoose.model('Movie', MovieSchema);

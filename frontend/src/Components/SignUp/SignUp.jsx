@@ -12,8 +12,6 @@ const defaultFormFields = {
   confirmPassword: "",
 };
 
-//there should be a mechanism that stops the user from sending requests unless he changed the field!
-
 export const SignUp = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, username, email, password, confirmPassword } =
@@ -68,7 +66,7 @@ export const SignUp = () => {
     <div className="sign-up-container">
       <h2>Don&apos;t have an account?</h2>
       <span>Sign up with your email and password</span>
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <FormInput
           label="Display Name"
           onChange={handleChange}
@@ -117,7 +115,9 @@ export const SignUp = () => {
 
         <p className="error-message">{formError.message}</p>
         <div className="buttons-container">
-          <button type="submit" disabled={disabled}>Sign in</button>
+          <button className="authButtons" type="submit" disabled={disabled}>
+            Sign up
+          </button>
           {/*     <Button type="button" onClick={signInWithGoogle} buttonType="google">
             Google Sign in
           </Button> */}

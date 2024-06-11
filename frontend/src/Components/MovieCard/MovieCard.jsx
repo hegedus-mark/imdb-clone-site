@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
-import { useWatchlist } from "../../Hooks";
+import { useWatchlist, useAuth, useToast } from "../../Hooks";
 import "./style.scss";
 
 export const MovieCard = ({ detailedMovieData }) => {
   const baseImageUrl = "https://image.tmdb.org/t/p";
   const navigate = useNavigate();
   const { addToWatchList, removeFromWatchList, watchList } = useWatchlist();
+  const { isItLoggedIn } = useAuth();
+  const {showWarningToast} = useToast();
 
   const inWatchList = watchList.includes(detailedMovieData.id);
 
@@ -15,6 +17,10 @@ export const MovieCard = ({ detailedMovieData }) => {
   };
 
   const handleRibbonClick = async (movie) => {
+    if (!isItLoggedIn) {
+      showWarningToast("You need to be logged in first!");
+      navigate("/auth");
+    }
     if (!inWatchList) {
       await addToWatchList(movie);
     } else {

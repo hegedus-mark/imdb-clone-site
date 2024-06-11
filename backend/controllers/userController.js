@@ -38,7 +38,7 @@ export const getWatchList = async (req, res) => {
   try {
     const userData = req.userData;
     const populatedUser = await userData.populate("watchlist")
-
+    console.log("watchlist", populatedUser.watchlist)
     res.json({ results: populatedUser.watchlist })
   } catch (error) {
     console.error(error);
