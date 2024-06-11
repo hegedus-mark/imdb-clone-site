@@ -1,3 +1,4 @@
+import { Rating } from "../../Components";
 import "./style.scss";
 import { useMoviePage } from "./useMoviePage";
 
@@ -57,6 +58,7 @@ export const MoviePage = () => {
             return <button key={genre.id}>{genre.name}</button>;
           })}
         </div>
+        <Rating />
       </div>
     )
   );

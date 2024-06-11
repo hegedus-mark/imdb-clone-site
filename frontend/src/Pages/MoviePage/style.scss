@@ -1,6 +1,8 @@
 .moviepage-main-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   position: relative;
   width: 100%;
   overflow: hidden;
