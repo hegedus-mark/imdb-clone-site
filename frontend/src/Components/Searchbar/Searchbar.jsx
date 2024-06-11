@@ -14,6 +14,8 @@ export const Searchbar = () => {
     setFocus,
   } = useSearchbar();
 
+ //Seems like a lot of requests are being made in the results. Maybe there is a way to optimize this? - Mark
+
   return (
     <div className="search-container">
       <div className="searchbar-main">
