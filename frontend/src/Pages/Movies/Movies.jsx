@@ -2,6 +2,8 @@ import { useState, useEffect, Fragment } from "react";
 import { Carousel, MovieCard, SideBar } from "../../Components";
 import { useParams } from "react-router-dom";
 
+import "./style.scss";
+
 export const Movies = () => {
   const [categoryName, setCategoryName] = useState("Popular ");
   const genre = useParams();

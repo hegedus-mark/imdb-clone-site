@@ -17,15 +17,15 @@
 
 .scalingButton {
   cursor: pointer;
-  background-color: black;
+  background: #121212;
   color: rgb(57, 34, 160);
   border: none;
   font-size: 20px;
-  transition: sclale 1s;
+  transition: scale 1s;
 
   &:hover {
-    background-color: darkblue;
-    box-shadow: 0 0 10px 5px darkblue; /* Create a circular spotlight effect */
+    background-color: rgb(10, 107, 199);
+    box-shadow: 0 0 10px 5px rgb(10, 107, 199); /* Create a circular spotlight effect */
     scale: 1.1;
   }
 }

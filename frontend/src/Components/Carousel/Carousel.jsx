@@ -1,10 +1,9 @@
 import { MovieCard } from "../MovieCard/MovieCard";
 import "./style.scss";
 import Slider from "react-slick";
+import { Arrow } from "../../assets/arrow.jsx";
 
 export function Carousel({ items, category }) {
-
-
   const settings = {
     draggable: false,
     dots: false,
@@ -44,7 +43,7 @@ export function Carousel({ items, category }) {
 
   return (
     <div className="movie-carousel">
-      <h1>{category}</h1>
+      <h1>{category.toUpperCase()}</h1>
       <Slider {...settings}>
         {items.map((movie) => (
           <div className="cards" key={movie.id}>
@@ -59,8 +58,8 @@ export function Carousel({ items, category }) {
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
-    <div className="arrow next" onClick={onClick}>
-      &gt;
+    <div className="arrow-container next" onClick={onClick}>
+      <Arrow className="arrow" />
     </div>
   );
 };
@@ -68,8 +67,8 @@ const NextArrow = (props) => {
 const PrevArrow = (props) => {
   const { onClick } = props;
   return (
-    <div className="arrow prev" onClick={onClick}>
-      &lt;
+    <div className="arrow-container prev" onClick={onClick}>
+      <Arrow className="arrow" />
     </div>
   );
 };

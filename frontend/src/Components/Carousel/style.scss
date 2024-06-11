@@ -5,22 +5,46 @@
 /* src/MovieCarousel.scss */
 .movie-carousel {
   position: relative;
+  margin-bottom: 10px;
+
+  h1 {
+    color: teal;
+    font-size: 2rem;
+    font-family: "Oswald", sans-serif;
+  }
 }
 
-.arrow {
+.arrow-container {
   position: absolute;
-  top: 50%;
+  top: 45%;
   transform: translateY(-50%);
+  background-color: #121212;
+  opacity: 0.5;
   cursor: pointer;
-  font-size: 50px;
   z-index: 2;
-  color: red;
-}
+  width: 3rem;
+  height: 6rem;
+  border: white 1px solid;
+  transition: opacity 0.3s;
 
+  &:hover {
+    opacity: 1;
+  }
+  .arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: fill 0.3s;
+  }
+  &:hover .arrow {
+    fill: aqua;
+  }
+}
 .next {
-  right: -2rem;
+  right: -1rem;
 }
-
 .prev {
-  left: -2rem;
+  transform: rotate(180deg) translateY(50%);
+  left: -1rem;
 }

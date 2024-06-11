@@ -8,5 +8,6 @@ export * from "./Result/Result";
 export * from "./contexts/AuthContext/AuthContext"
 export * from "./PrivateRoute/PrivateRoute";
 export * from "./GuestOnlyRoute/GuestOnlyRoute"
-export * from "./ChangePasswordForm/ChangePasswordForm"
-export * from "./SideBar/SideBar"
+export * from "./ChangePasswordForm/ChangePasswordForm";
+export * from "./SideBar/SideBar";
+export * from "./MoviesContainer/MoviesContainer";
