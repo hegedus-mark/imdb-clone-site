@@ -9,9 +9,9 @@ export const Movies = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchingMoviesByGenre = async () => {
-      let url = "/api/movies/popular";
+      let url = "/api/movies?category=popular";
       if (genre.genre) {
-        url = `/api/movies/${genre.genre}`;
+        url = `/api/genres/${genre.genre}`;
       }
       const data = await fetch(`${url}`);
       const response = await data.json();

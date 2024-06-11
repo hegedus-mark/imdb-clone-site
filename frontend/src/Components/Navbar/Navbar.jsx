@@ -9,26 +9,26 @@ export function NavBar() {
   return (
     <div>
       <ul className="navbar-container">
-        <button>
+        <button className="scalingButton">
           <Link to="/newsfeed">News Feed</Link>
         </button>
-        <button>
+        <button className="scalingButton">
           <Link to="/movies">Movies</Link>
         </button>
-        <button>
+        <button className="scalingButton">
           <Link to="/friends">Friends</Link>
         </button>
-        <button>
+        <button className="scalingButton">
           <Link to="/my-list">My list</Link>
-        </li>
+        </button>
         {!isItLoggedIn ? (
-          <li>
+          <button className="scalingButton">
             <Link to="/auth">Sign in</Link>
-          </li>
+          </button>
         ) : (
-          <li>
+          <button className="scalingButton">
             <Link to={`/profile/${user.userId}`}>Profile</Link>
-          </li>
+          </button>
         )}
       </ul>
     </div>

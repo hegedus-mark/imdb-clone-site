@@ -4,7 +4,7 @@ import authRoutes from './routes/authRoutes.js';
 import movieRoutes from './routes/movieRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import genresRoutes from "./routes/genresRoutes.js";
-import {timingMiddleware} from "./middleware/timingMiddleware.js";
+import {timingMiddleware} from "./middleware/logging.js";
 
 const app = express();
 
