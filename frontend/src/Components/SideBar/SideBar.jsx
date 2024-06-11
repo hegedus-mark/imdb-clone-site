@@ -21,7 +21,7 @@ export const SideBar = ({ setCategoryName }) => {
           <Fragment key={genre.id}>
             <Link to={`/movies/${genre.id}`}>
               <button
-                className="sideBarButton"
+                className="scalingButton"
                 onClick={() => setCategoryName(genre.name)}
               >
                 {genre.name}

@@ -7,30 +7,28 @@ export function NavBar() {
   const { isItLoggedIn, user } = useAuth();
 
   return (
-    <div>
-      <ul className="navbar-container">
-        <button>
-          <Link to="/newsfeed">News Feed</Link>
-        </button>
-        <button>
-          <Link to="/movies">Movies</Link>
-        </button>
-        <button>
-          <Link to="/friends">Friends</Link>
-        </button>
-        <button>
-          <Link to="/my-list">My list</Link>
-        </li>
-        {!isItLoggedIn ? (
-          <li>
-            <Link to="/auth">Sign in</Link>
-          </li>
-        ) : (
-          <li>
-            <Link to={`/profile/${user.userId}`}>Profile</Link>
-          </li>
-        )}
-      </ul>
+    <div className="navbar-container">
+      <Link to="/newsfeed">
+        <button className="navButton scalingButton"> &#10013; News Feed</button>
+      </Link>
+      <Link to="/movies">
+        <button className="navButton scalingButton">Movies</button>
+      </Link>
+      <Link to="/friends">
+        <button className="navButton scalingButton"> &#10013; Friends</button>
+      </Link>
+      <Link to="/my-list">
+        <button className="navButton scalingButton">My list</button>
+      </Link>
+      {!isItLoggedIn ? (
+        <Link to="/auth">
+          <button className="navButton scalingButton">Sign in</button>
+        </Link>
+      ) : (
+        <Link to={`/profile/${user.userId}`}>
+          <button className="navButton scalingButton">Profile</button>
+        </Link>
+      )}
     </div>
   );
 }

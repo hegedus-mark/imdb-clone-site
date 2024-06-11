@@ -14,3 +14,18 @@
   align-items: center;
   width: 100%;
 }
+
+.scalingButton {
+  cursor: pointer;
+  background: #121212;
+  color: rgb(57, 34, 160);
+  border: none;
+  font-size: 20px;
+  transition: scale 1s;
+
+  &:hover {
+    background-color: rgb(10, 107, 199);
+    box-shadow: 0 0 10px 5px rgb(10, 107, 199); /* Create a circular spotlight effect */
+    scale: 1.1;
+  }
+}

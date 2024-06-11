@@ -2,6 +2,8 @@ import { useState, useEffect, Fragment } from "react";
 import { Carousel, MovieCard, SideBar } from "../../Components";
 import { useParams } from "react-router-dom";
 
+import "./style.scss";
+
 export const Movies = () => {
   const [categoryName, setCategoryName] = useState("Popular ");
   const genre = useParams();
@@ -9,9 +11,9 @@ export const Movies = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchingMoviesByGenre = async () => {
-      let url = "/api/movies/popular";
+      let url = "/api/movies?category=popular";
       if (genre.genre) {
-        url = `/api/movies/${genre.genre}`;
+        url = `/api/genres/${genre.genre}`;
       }
       const data = await fetch(`${url}`);
       const response = await data.json();

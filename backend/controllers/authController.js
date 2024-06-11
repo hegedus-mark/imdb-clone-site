@@ -5,8 +5,11 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ message: "Invalid Credentials" });
+    if (!user) {
+      return res.status(401).json({ message: "Email isn't registered", formError: { message: "The given email is not registered", fields: ["email"] } });
+    }
+    if (!(await user.comparePassword(password))) {
+      return res.status(401).json({ message: "Invalid Credentials", formError: { message: "The given email or password is incorrect", fields: ["email", "password"] } });
     }
 
     const token = generateToken(user);
@@ -22,8 +25,10 @@ export const registerUser = async (req, res) => {
     const { username, email, password, displayName } = req.body;
     let user = await User.findOne({ $or: [{ email }, { username }] });
 
-    if (user) {
-      return res.status(400).json({ message: "Email or username already taken" });
+    if (user.email === email) {
+      return res.status(400).json({ message: "Email is already registered", formError: { message: "The given email is already registered", fields: ["email"] } });
+    } else if (user.username === username) {
+      return res.status(400).json({ message: "Username is already taken", formError: { message: "The given username is already taken", fields: ["username"] } });
     }
 
     user = new User({ username, email, password, displayName });

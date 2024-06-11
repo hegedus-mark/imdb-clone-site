@@ -1,24 +1,20 @@
 .navbar-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 5vh;
-  list-style-type: none;
-}
-a {
-  text-decoration: none;
-  color: rgb(57, 34, 160);
-}
-button {
-  cursor: pointer;
-  background-color: black;
-  color: rgb(57, 34, 160);
-  border: none;
-  font-size: 20px;
-  transition: sclale 1s;
+  margin-right: 400px;
+  margin-left: 25px;
 
-  &:hover {
-    background-color: darkblue;
-    box-shadow: 0 0 20px 10px darkblue; /* Create a circular spotlight effect */
-    scale: 1.5;
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .navButton {
+    color: white;
+    height: 50px;
+    width: 150px;
+    border-radius: 20px;
   }
 }

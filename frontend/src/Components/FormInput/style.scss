@@ -38,12 +38,6 @@ $error-color: red;
     }
   }
 
-  .error-message{
-    color: $error-color;
-    position: absolute;
-    top:50px;
-    left:10px;
-  }
 
   input[type='password'] {
     letter-spacing: 0.3em;

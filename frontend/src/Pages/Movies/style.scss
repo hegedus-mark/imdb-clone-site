@@ -1,6 +1,8 @@
 .moviespage-container {
   display: flex;
   flex-direction: row;
+  position: relative;
+  width: 80%;
 
   .movies-container {
     display: flex;

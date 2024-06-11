@@ -38,7 +38,7 @@ export const getWatchList = async (req, res) => {
   try {
     const userData = req.userData;
     const populatedUser = await userData.populate("watchlist")
-
+    console.log("watchlist", populatedUser.watchlist)
     res.json({ results: populatedUser.watchlist })
   } catch (error) {
     console.error(error);
@@ -60,6 +60,7 @@ export const addMovieToWatchList = async (req, res) => {
     }
     userData.watchlist.push(movie._id);
     await userData.save();
+    console.log("Movie added to watchlist", movie.title);
     res.json({ message: "Movie added to watchlist" });
   } catch (error) {
     console.error(error);
@@ -82,6 +83,7 @@ export const removeMovieFromWatchList = async (req, res) => {
     }
     userData.watchlist.pull(movie._id);
     await userData.save();
+    console.log("Movie removed from watchlist", movie.title);
     res.json({ message: "Movie removed from watchlist" });
   } catch (error) {
     console.error(error);
