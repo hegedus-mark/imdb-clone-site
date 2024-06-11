@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import "./style.scss";
 import { FormInput } from "../FormInput/FormInput";
 import { AuthContext } from "../contexts/AuthContext/AuthContext";
 import "./style.scss"
