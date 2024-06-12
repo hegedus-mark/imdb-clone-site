@@ -35,10 +35,15 @@ export const getProfile = async (req, res) => {
 
 
 export const getWatchList = async (req, res) => {
+  const { page } = req.query;
+  const reqPage = page ? page : 1;
+
   try {
     const userData = req.userData;
     const populatedUser = await userData.populate("watchlist")
-    res.json({ results: populatedUser.watchlist })
+    const sentWatchList = populatedUser.watchlist.slice((reqPage - 1) * 20, reqPage * 20);
+    const watchListIds = populatedUser.watchlist.map(movie => movie.tmdb_id);
+    res.json({ results: sentWatchList, ids: watchListIds, total_pages: Math.ceil(populatedUser.watchlist.length / 20), page: reqPage });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });

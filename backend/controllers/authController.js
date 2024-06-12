@@ -32,14 +32,15 @@ export const registerUser = async (req, res) => {
     const { username, email, password, displayName } = req.body;
     let user = await User.findOne({ $or: [{ email }, { username }] });
 
-    if (user.email === email) {
+    if (user && user.email === email) {
       return res.status(400).json({ message: "Email is already registered", formError: { message: "The given email is already registered", fields: ["email"] } });
-    } else if (user.username === username) {
+    } else if (user && user.username === username) {
       return res.status(400).json({ message: "Username is already taken", formError: { message: "The given username is already taken", fields: ["username"] } });
     }
 
+    user = new User({ username, email, password, displayName});
     const refreshToken = generateRefreshToken(user);
-    user = new User({ username, email, password, displayName, refreshToken });
+    user.refreshToken = refreshToken;
     await user.save();
     const token = generateToken(user);
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict' });

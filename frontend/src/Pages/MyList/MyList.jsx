@@ -1,16 +1,29 @@
 import { useWatchlist } from "../../Hooks";
-import { Loading } from "../../Components";
+import { Loading, MoviesContainer, Pagination } from "../../Components";
+
+import "./style.scss";
 
 export const MyList = () => {
-  const { watchList, loading } = useWatchlist();
+  const { populatedWatchList, loading, error, totalPages, page, setPage } =
+    useWatchlist();
 
-  console.log("watchlist!", watchList);
   if (loading) return <Loading />;
 
+  if (error) return <h1>{error.message}</h1>;
+
   return (
-    <div>
-      <div>MyList</div>
-      <div>{watchList.map((movie) => movie.title)}</div>
+    <div className="watchlist-container">
+      <div>
+        <h1 className="category-name">My List</h1>
+        <MoviesContainer movies={populatedWatchList} />
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        )}
+      </div>
     </div>
   );
 };

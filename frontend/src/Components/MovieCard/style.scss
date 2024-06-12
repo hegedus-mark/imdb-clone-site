@@ -44,6 +44,15 @@
         background-color: yellow;
         color: black;
       }
+
+      &.in-watchlist {
+        background-color: #0c20d1;
+        font-weight: 600;
+      }
+
+      &.in-watchlist:hover {
+        background-color: rgba(112, 150, 143, 0.753);
+      }
     }
 
     .poster-footer {
