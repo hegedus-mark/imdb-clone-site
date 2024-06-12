@@ -9,8 +9,7 @@ export const WatchlistContext = createContext({
   fetchWatchList: async () => null,
 });
 
-//I was too lazy to create a reusable refresh token function, so this will just reditect us to the profilePage if the status is 401
-//Which will handle the refresh token logic
+
 const fetchProtectedData = async (url, method, token) => {
   console.log(`Starting request to ${url} with method ${method}`);
   const startTime = performance.now();
@@ -25,9 +24,6 @@ const fetchProtectedData = async (url, method, token) => {
   const connectTime = performance.now();
   console.log(`Connected to ${url} in ${connectTime - startTime}ms`);
 
-  if (response.status === 401) {
-    return "401";
-  }
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
