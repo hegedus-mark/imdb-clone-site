@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { FormInput } from "../../Components/FormInput/FormInput";
 
+import "./style.scss";
+
 export const ChangePasswordForm = ({
   setShowChangePassword,
   changePassword,
@@ -51,10 +53,18 @@ export const ChangePasswordForm = ({
           required
           name="confirmNewPassword"
         />
-        <button type="submit">Change Password</button>
-        <button type="button" onClick={() => setShowChangePassword(false)}>
-          Cancel
-        </button>
+        <div className="button-container">
+          <button
+            className="fancy-button"
+            type="button"
+            onClick={() => setShowChangePassword(false)}
+          >
+            Cancel
+          </button>
+          <button className="fancy-button" type="submit">
+            Change Password
+          </button>
+        </div>
       </form>
     </div>
   );

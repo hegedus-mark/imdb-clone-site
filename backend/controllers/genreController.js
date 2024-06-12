@@ -1,16 +1,19 @@
 import { TMDB_OPTIONS } from "../config/tmdbConfig.js";
+import { saveMoviesToDB } from "../utils/saveMovies.js";
 
 
-
-export const getGenre = async (req, res) => {
+export const getMoviesByGenre = async (req, res) => {
   const ID = req.params.genre;
+  const { page } = req.query;
+  const reqPage = page ? page : 1;
   try {
     fetch(
-      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${ID}`,
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${reqPage}&sort_by=popularity.desc&with_genres=${ID}`,
       TMDB_OPTIONS
     )
       .then((res) => res.json())
-      .then((json) => {
+      .then(async (json) => {
+        await saveMoviesToDB(json.results);
         res.json(json);
       })
       .catch((err) => console.error(err));

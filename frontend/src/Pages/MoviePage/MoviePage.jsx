@@ -1,6 +1,7 @@
 import { Rating } from "../../Components";
 import "./style.scss";
 import { useMoviePage } from "./useMoviePage";
+import { Loading } from "../../Components";
 
 export const MoviePage = () => {
   const {
@@ -16,7 +17,7 @@ export const MoviePage = () => {
   } = useMoviePage();
 
   return loading ? (
-    <h1>Please wait, loading</h1>
+    <Loading />
   ) : error ? (
     <h1>{error}</h1>
   ) : (

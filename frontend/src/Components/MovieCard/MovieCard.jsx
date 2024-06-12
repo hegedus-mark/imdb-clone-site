@@ -1,5 +1,6 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/prop-types */
+import { useNavigate } from "react-router-dom";
+import { Eye } from "../../assets/eye";
+import { useWatchlist, useAuth, useToast } from "../../Hooks";
 import "./style.scss";
 import { useMovieCard } from "./useMovieCard";
 
@@ -12,15 +13,46 @@ export const MovieCard = ({ detailedMovieData }) => {
     rateAverage,
   } = useMovieCard(detailedMovieData);
 
+  const baseImageUrl = "https://image.tmdb.org/t/p";
+  const navigate = useNavigate();
+  const { addToWatchList, removeFromWatchList, watchList } = useWatchlist();
+  const { isItLoggedIn } = useAuth();
+  const { showWarningToast, showInfoToast } = useToast();
+
+  const inWatchList =
+    watchList.includes(detailedMovieData.id) ||
+    watchList.includes(detailedMovieData.tmdb_id);
+
+  const posterClickHandler = () => {
+    const id = detailedMovieData.id
+      ? detailedMovieData.id
+      : detailedMovieData.tmdb_id;
+    navigate(`/movie/${id}`);
+  };
+
+  const handleRibbonClick = async (movie) => {
+    if (!isItLoggedIn) {
+      showWarningToast("You need to be logged in first!");
+      navigate("/auth");
+    }
+    if (!inWatchList) {
+      await addToWatchList(movie);
+      showInfoToast(`${movie.title} added to watchlist`);
+    } else {
+      await removeFromWatchList(movie);
+      showInfoToast(`${movie.title} removed from watchlist`);
+    }
+  };
+
   return (
     <div className="movie-card">
       <div className="movie-card-inner">
         <div className="poster" onClick={posterClickHandler}>
           <button
-            className="ribbon-btn"
+            className={"ribbon-btn" + (inWatchList ? " in-watchlist" : "")}
             onClick={() => handleRibbonClick(detailedMovieData)}
           >
-            {inWatchList ? "-" : "+"}
+            {inWatchList ? <Eye /> : "+"}
           </button>
           <img
             className="poster-img"

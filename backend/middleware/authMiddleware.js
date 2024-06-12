@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { secretKey } from "../config/jwt.js";
+import { SECRET_KEY } from '../config/sensitiveData.js';
 
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -8,7 +8,7 @@ export const verifyToken = (req, res, next) => {
   }
 
   const token = authHeader.split(' ')[1];
-  jwt.verify(token, secretKey, (err, decoded) => {
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: 'Invalid token' });
     }

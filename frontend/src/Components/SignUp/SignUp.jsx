@@ -115,7 +115,7 @@ export const SignUp = () => {
 
         <p className="error-message">{formError.message}</p>
         <div className="buttons-container">
-          <button className="authButtons" type="submit" disabled={disabled}>
+          <button className="fancy-button" type="submit" disabled={disabled}>
             Sign up
           </button>
           {/*     <Button type="button" onClick={signInWithGoogle} buttonType="google">

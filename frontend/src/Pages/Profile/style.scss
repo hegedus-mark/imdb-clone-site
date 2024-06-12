@@ -1,0 +1,45 @@
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  background: black;
+  overflow: hidden;
+
+  .profile-container {
+    display: flex;
+    margin-top: 30px;
+    margin-left: 200px;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h1 {
+      margin-bottom: 30px;
+    }
+    .user-profile {
+      p {
+        margin: 10px 0;
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+
+      .highlight {
+        font-weight: bold;
+        font-size: 1.5rem;
+        display: inline-block;
+        color: #22b9d5;
+        width: 200px;
+      }
+    }
+
+    .change-password {
+      display: flex;
+    }
+
+    .logout {
+      position: fixed;
+      bottom: 4rem;
+      width: 20%;
+    }
+  }
+}

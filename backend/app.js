@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import movieRoutes from "./routes/movieRoutes.js";
@@ -14,6 +15,7 @@ connectDB();
 
 // Express Middlewares
 app.use(express.json());
+app.use(cookieParser());
 app.use(timingMiddleware);
 
 // Routes

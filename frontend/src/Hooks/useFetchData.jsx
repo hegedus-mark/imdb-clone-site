@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "./useAuth";
 
 export const useFetchData = (
   runOnLoad,
@@ -10,6 +11,7 @@ export const useFetchData = (
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const { fetchRefreshToken } = useAuth();
 
   //TODO: Rewrite it so that it will only set data if response is ok
   const fetchData = (url, httpMethod, dataToSend) => {
@@ -31,6 +33,9 @@ export const useFetchData = (
   };
 
   useEffect(() => {
+    if (authToken) {
+      fetchRefreshToken().then(() => fetchData(url, httpMethod, dataToSend));
+    }
     if (runOnLoad) {
       fetchData(url, httpMethod, dataToSend);
     } else {

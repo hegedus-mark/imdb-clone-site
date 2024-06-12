@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { changePassword } from "../../Services";
-import { useFetchData, useAuth } from "../../Hooks";
-import { ChangePasswordForm } from "../../Components";
+import { useAuth, useToast, useFetchData } from "../../Hooks";
+import { ChangePasswordForm, Loading } from "../../Components";
+
+import "./style.scss";
 
 const confirmPassword = (newPassword, confirmNewPassword) => {
   return newPassword === confirmNewPassword;
@@ -11,14 +13,10 @@ const confirmPassword = (newPassword, confirmNewPassword) => {
 
 export const Profile = () => {
   const { userId } = useParams();
-  const { token, logout } = useAuth();
-  const { data, loading, error } = useFetchData(
-    true,
-    `/api/user/${userId}/profile`,
-    "GET",
-    null,
-    token
-  );
+  const { logout, token, fetchRefreshToken } = useAuth();
+  const url = `/api/user/${userId}/profile`;
+  const { data, loading, error } = useFetchData(true, url, "GET", null, token);
+  const { showErrorToast, showSuccessToast } = useToast();
   const [showChangePassword, setShowChangePassword] = useState(false);
 
   const handlePasswordSubmit = async (
@@ -27,7 +25,7 @@ export const Profile = () => {
     currentPassword
   ) => {
     if (!confirmPassword(newPassword, confirmNewPassword)) {
-      alert("Passwords do not match");
+      showErrorToast("Passwords do not match");
       return;
     }
     const response = await changePassword(
@@ -38,21 +36,20 @@ export const Profile = () => {
     );
 
     if (response.ok) {
-      alert("Password changed successfully");
+      showSuccessToast("Password changed successfully");
       setShowChangePassword(false);
     } else {
-      alert(response.statusText);
+      showErrorToast(response.statusText);
     }
     console.log(response);
   };
-
   let user;
   if (data) {
     user = data.user;
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
@@ -60,28 +57,42 @@ export const Profile = () => {
   }
 
   return (
-    <div>
-      <h1>Profile</h1>
+    <div className="profile-page">
       {user && (
-        <div>
-          <div>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-            <p>DisplayName: {user.displayName}</p>
+        <div className="profile-container">
+          <div className="user-profile">
+            <h1>Profile</h1>
+            <p>
+              <span className="highlight">Username:</span> {user.username}
+            </p>
+            <p>
+              <span className="highlight">Email:</span> {user.email}
+            </p>
+            <p>
+              <span className="highlight">Display Name:</span>{" "}
+              {user.displayName}
+            </p>
           </div>
-          <div>
-            {!showChangePassword ? (
-              <button onClick={() => setShowChangePassword(true)}>
-                Change Password
-              </button>
-            ) : (
-              <ChangePasswordForm
-                setShowChangePassword={setShowChangePassword}
-                changePassword={handlePasswordSubmit}
-              />
-            )}
+          <div className="change-password">
+            <div>
+              {!showChangePassword ? (
+                <button
+                  className="fancy-button"
+                  onClick={() => setShowChangePassword(true)}
+                >
+                  Change Password
+                </button>
+              ) : (
+                <ChangePasswordForm
+                  setShowChangePassword={setShowChangePassword}
+                  changePassword={handlePasswordSubmit}
+                />
+              )}
+            </div>
           </div>
-          <button onClick={() => logout()}>Logout</button>
+          <button className="fancy-button logout" onClick={() => logout()}>
+            Logout
+          </button>
         </div>
       )}
     </div>
