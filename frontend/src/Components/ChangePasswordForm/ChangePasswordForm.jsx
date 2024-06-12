@@ -28,7 +28,7 @@ export const ChangePasswordForm = ({
   return (
     <div>
       <h2>Change Password</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="password-reset">
         <FormInput
           label={"Current Password"}
           type="password"

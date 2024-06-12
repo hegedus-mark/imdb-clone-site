@@ -15,26 +15,28 @@ export const useRating = (movieId) => {
 
   useEffect(() => {
     console.log(data);
-    if (data && data.length > 1) {
-      data.forEach((rating) => {
-        if (
-          rating.userId === user.userId &&
-          rating.movieId.toString() === movieId.toString()
-        ) {
-          console.log("1", rating);
-          setUserRate(rating.rating);
-          setRatingId(rating._id);
+    if (user) {
+      if (data && data.length > 1) {
+        data.forEach((rating) => {
+          if (
+            rating.userId === user.userId &&
+            rating.movieId.toString() === movieId.toString()
+          ) {
+            console.log("1", rating);
+            setUserRate(rating.rating);
+            setRatingId(rating._id);
+          }
+        });
+      } else if (
+        data &&
+        data.length === 1 &&
+        data[0].movieId.toString() === movieId.toString()
+      ) {
+        if (data[0].userId === user.userId) {
+          console.log("2", data);
+          setUserRate(data[0].rating);
+          setRatingId(data[0]._id);
         }
-      });
-    } else if (
-      data &&
-      data.length === 1 &&
-      data[0].movieId.toString() === movieId.toString()
-    ) {
-      if (data[0].userId === user.userId) {
-        console.log("2", data);
-        setUserRate(data[0].rating);
-        setRatingId(data[0]._id);
       }
     }
   }, [data, error]);
@@ -46,7 +48,8 @@ export const useRating = (movieId) => {
   }, [ratingId]);
 
   const clickHandler = async (score) => {
-    if (!user.userId) {
+    console.log("aaa", user);
+    if (user === null) {
       navigate("/auth");
       return;
     }

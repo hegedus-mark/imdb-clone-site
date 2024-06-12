@@ -29,7 +29,7 @@ $error-color: red;
       outline: none;
     }
 
-    &.error{
+    &.error {
       border: 3px $error-color solid;
     }
 
@@ -38,8 +38,7 @@ $error-color: red;
     }
   }
 
-
-  input[type='password'] {
+  input[type="password"] {
     letter-spacing: 0.3em;
   }
 
@@ -56,5 +55,14 @@ $error-color: red;
     &.shrink {
       @include shrinkLabel();
     }
+  }
+}
+
+.password-reset {
+  .group {
+    margin: 1rem;
+  }
+  .form-input {
+    margin: 0rem;
   }
 }

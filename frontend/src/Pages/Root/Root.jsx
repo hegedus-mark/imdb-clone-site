@@ -11,7 +11,8 @@ export const Root = () => {
   const showSearchBar =
     location.pathname.startsWith("/movies") ||
     location.pathname === "/" ||
-    location.pathname.startsWith("/movie");
+    location.pathname.startsWith("/movie") ||
+    location.pathname.startsWith("/my-list");
 
   /* console.log(showSearchBar); */
   return (

@@ -9,17 +9,26 @@ export const useMovieCard = (detailedMovieData) => {
   const [rateAverage, setRateAverage] = useState("Not Rated Yet");
   const { addToWatchList, removeFromWatchList, watchList } = useWatchlist();
   const { isItLoggedIn } = useAuth();
-  const { showWarningToast } = useToast();
+  const { showWarningToast, showInfoToast } = useToast();
+  const ID = detailedMovieData.id
+    ? detailedMovieData.id
+    : detailedMovieData.tmdb_id;
   const {
     data: movieRating,
     loading,
     error,
     fetchData,
-  } = useFetchData(true, `/api/rating/${detailedMovieData.id}`, "GET");
+  } = useFetchData(true, `/api/rating/${ID}`, "GET");
 
-  const inWatchList = watchList.includes(detailedMovieData.id);
+  const inWatchList =
+    watchList.includes(detailedMovieData.id) ||
+    watchList.includes(detailedMovieData.tmdb_id);
+
   const posterClickHandler = () => {
-    navigate(`/movie/${detailedMovieData.id}`);
+    const id = detailedMovieData.id
+      ? detailedMovieData.id
+      : detailedMovieData.tmdb_id;
+    navigate(`/movie/${id}`);
   };
 
   const handleRibbonClick = async (movie) => {
@@ -29,8 +38,10 @@ export const useMovieCard = (detailedMovieData) => {
     }
     if (!inWatchList) {
       await addToWatchList(movie);
+      showInfoToast(`${movie.title} added to watchlist`);
     } else {
       await removeFromWatchList(movie);
+      showInfoToast(`${movie.title} removed from watchlist`);
     }
   };
 
