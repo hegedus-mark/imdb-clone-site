@@ -1,0 +1,25 @@
+.rating-container {
+  width: 70vw;
+  display: flex;
+  justify-content: flex-start;
+  button {
+    border: none;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    width: 10rem;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    transition: 0.3s;
+    &:hover {
+      background-color: white;
+      scale: 1.03;
+    }
+    background-color: rgba(255, 255, 255, 0.616);
+    &.active-rate-btn {
+      scale: 1.15;
+      background-color: rgb(255, 255, 255);
+    }
+  }
+}

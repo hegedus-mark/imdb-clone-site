@@ -1,39 +1,16 @@
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react/prop-types */
 import { Eye } from "../../assets/eye";
-import { useWatchlist, useAuth, useToast } from "../../Hooks";
 import "./style.scss";
+import { useMovieCard } from "./useMovieCard";
 
 export const MovieCard = ({ detailedMovieData }) => {
-  const baseImageUrl = "https://image.tmdb.org/t/p";
-  const navigate = useNavigate();
-  const { addToWatchList, removeFromWatchList, watchList } = useWatchlist();
-  const { isItLoggedIn } = useAuth();
-  const { showWarningToast, showInfoToast } = useToast();
-
-  const inWatchList =
-    watchList.includes(detailedMovieData.id) ||
-    watchList.includes(detailedMovieData.tmdb_id);
-
-  const posterClickHandler = () => {
-    const id = detailedMovieData.id
-      ? detailedMovieData.id
-      : detailedMovieData.tmdb_id;
-    navigate(`/movie/${id}`);
-  };
-
-  const handleRibbonClick = async (movie) => {
-    if (!isItLoggedIn) {
-      showWarningToast("You need to be logged in first!");
-      navigate("/auth");
-    }
-    if (!inWatchList) {
-      await addToWatchList(movie);
-      showInfoToast(`${movie.title} added to watchlist`);
-    } else {
-      await removeFromWatchList(movie);
-      showInfoToast(`${movie.title} removed from watchlist`);
-    }
-  };
+  const {
+    baseImageUrl,
+    posterClickHandler,
+    handleRibbonClick,
+    inWatchList,
+    rateAverage,
+  } = useMovieCard(detailedMovieData);
 
   return (
     <div className="movie-card">
@@ -52,9 +29,9 @@ export const MovieCard = ({ detailedMovieData }) => {
             alt="poster"
           />
         </div>
-        <div className="poster-footer">
+        <div className="poster-footer" onClick={posterClickHandler}>
           <div className="score">
-            <p>100% SO BAD IT'S GOOD</p>
+            <p>{rateAverage}</p>
           </div>
           <div className="title">
             <h3>{detailedMovieData.title}</h3>

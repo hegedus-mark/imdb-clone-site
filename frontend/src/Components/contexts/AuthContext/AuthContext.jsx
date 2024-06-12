@@ -93,10 +93,10 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      console.log("data received", data);
+      /* console.log("data received", data); */
       login(data.token, data.user);
-      console.log("Success:", data.token);
-      console.log("user", data.user);
+      /* console.log("Success:", data.token); */
+      /* console.log("user", data.user); */
       return { ok: true, message: "Great Success!!" };
     } catch (error) {
       console.error("Error:", error);
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }) => {
         error,
         logout,
         authoriseUser,
-        fetchRefreshToken
+        fetchRefreshToken,
       }}
     >
       {children}

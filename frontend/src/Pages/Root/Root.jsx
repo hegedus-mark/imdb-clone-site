@@ -7,11 +7,14 @@ export const Root = () => {
 
   const location = useLocation();
 
-  console.log(location.pathname);
+  /* console.log(location.pathname); */
   const showSearchBar =
-    location.pathname.startsWith("/movies") || location.pathname === "/";
+    location.pathname.startsWith("/movies") ||
+    location.pathname === "/" ||
+    location.pathname.startsWith("/movie") ||
+    location.pathname.startsWith("/my-list");
 
-  console.log(showSearchBar);
+  /* console.log(showSearchBar); */
   return (
     <div className="main-container">
       <div className="top-container">

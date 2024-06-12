@@ -26,7 +26,6 @@ export const useFetchData = (
     })
       .then((response) => response.json())
       .then((jsonData) => {
-        console.log("recieved:", jsonData);
         setData(jsonData);
         setLoading(false);
       })

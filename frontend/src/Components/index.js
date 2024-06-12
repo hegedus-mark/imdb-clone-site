@@ -5,11 +5,12 @@ export * from "./Searchbar/Searchbar";
 export * from "./SignIn/SignIn";
 export * from "./SignUp/SignUp";
 export * from "./Result/Result";
-export * from "./contexts/AuthContext/AuthContext"
+export * from "./contexts/AuthContext/AuthContext";
 export * from "./PrivateRoute/PrivateRoute";
-export * from "./GuestOnlyRoute/GuestOnlyRoute"
+export * from "./GuestOnlyRoute/GuestOnlyRoute";
 export * from "./ChangePasswordForm/ChangePasswordForm";
+export * from "./Rating/Rating";
 export * from "./SideBar/SideBar";
 export * from "./MoviesContainer/MoviesContainer";
-export * from "./Pagination/Pagination"
-export * from "./Loading/Loading"
+export * from "./Pagination/Pagination";
+export * from "./Loading/Loading";

@@ -72,7 +72,9 @@ export const SignIn = () => {
         />
         <p className="error-message">{formError.message}</p>
         <div className="buttons-container">
-          <button  className="fancy-button" type="submit">Sign in</button>
+          <button className="fancy-button" type="submit">
+            Sign in
+          </button>
           {/*     <Button type="button" onClick={signInWithGoogle} buttonType="google">
             Google Sign in
           </Button> */}
