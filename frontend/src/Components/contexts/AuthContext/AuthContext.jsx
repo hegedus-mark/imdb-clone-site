@@ -4,7 +4,7 @@ import { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext({
   user: null,
   token: null,
-  authoriseUser: () => null,
+  authoriseUser: async () => null,
   logout: () => null,
   isItLoggedIn: false,
 });
@@ -12,6 +12,7 @@ export const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [error, setError] = useState(null);
   const [isItLoggedIn, setIsItLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -49,38 +50,40 @@ export const AuthProvider = ({ children }) => {
 
   const authoriseUser = async (endpoint, formFields) => {
     try {
-      const response = await fetch(`/api/auth/${endpoint}`, {
+      const authoriseFetch = fetch(`/api/auth/${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formFields),
       });
+
+      const response = await authoriseFetch;
+      const data = await response.json();
       if (!response.ok) {
         console.error("Fail:", data.message);
         //we will send back an error, for example username is occupied!
-        return { ok: false, message: data.message, errors: data.errors || {} };
+        setError(data);
+        return {
+          ok: false,
+          error: { message: data.message, formError: data.formError },
+        };
       }
 
-      const data = await response.json();
       console.log("data received", data);
       login(data.token, data.user);
       console.log("Success:", data.token);
       console.log("user", data.user);
-      return { ok: true };
+      return { ok: true, message: "Great Success!!" };
     } catch (error) {
       console.error("Error:", error);
-      return {
-        ok: false,
-        message: "Something is not right, I can feel it... ,",
-        errors: {},
-      };
+      return { ok: false, message: "Something went wrong..." };
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ token, user, isItLoggedIn, logout, authoriseUser }}
+      value={{ token, user, isItLoggedIn, error, logout, authoriseUser }}
     >
       {children}
     </AuthContext.Provider>

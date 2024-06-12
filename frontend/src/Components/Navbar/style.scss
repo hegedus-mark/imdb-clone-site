@@ -1,9 +1,20 @@
 .navbar-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 5vh;
-  list-style-type: none;
-}
-a {
-  text-decoration: none;
+  margin-right: 400px;
+  margin-left: 25px;
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .navButton {
+    color: white;
+    height: 50px;
+    width: 150px;
+    border-radius: 20px;
+  }
 }

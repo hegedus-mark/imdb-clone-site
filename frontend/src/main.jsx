@@ -14,9 +14,11 @@ import {
 } from "./Pages";
 import { MoviePage } from "./Pages/MoviePage/MoviePage";
 import { PrivateRoute } from "./Components";
-import { AuthProvider } from "./Components/contexts/AuthContext/AuthContext";
-import "./main.styles.scss";
 import { GuestOnlyRoute } from "./Components/GuestOnlyRoute/GuestOnlyRoute";
+import { AuthProvider } from "./Components/contexts/AuthContext/AuthContext";
+import { WatchlistProvider } from "./Components/contexts/WatchlistContext/WatchlistContext";
+import { ToastProvider } from "./Components/contexts/ToastContext/ToastContext";
+import "./main.styles.scss";
 
 const routing = createBrowserRouter([
   {
@@ -28,12 +30,16 @@ const routing = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: "/movies",
+        path: "movies",
+        element: <Movies />,
+      },
+      {
+        path: "/movies/:genre",
         element: <Movies />,
       },
       {
         path: "/auth",
-        element: <GuestOnlyRoute element={<AuthPage />}/>
+        element: <GuestOnlyRoute element={<AuthPage />} />,
       },
       {
         path: "/movie/:id",
@@ -42,6 +48,10 @@ const routing = createBrowserRouter([
       {
         path: "/profile/:userId",
         element: <PrivateRoute element={<Profile />} />,
+      },
+      {
+        path: "/movies/:genre",
+        element: <Movies />,
       },
       {
         path: "/friends",
@@ -66,7 +76,11 @@ const routing = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={routing} />
+      <WatchlistProvider>
+        <ToastProvider>
+          <RouterProvider router={routing} />
+        </ToastProvider>
+      </WatchlistProvider>
     </AuthProvider>
   </React.StrictMode>
 );

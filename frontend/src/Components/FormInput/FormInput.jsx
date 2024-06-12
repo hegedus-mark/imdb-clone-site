@@ -1,10 +1,9 @@
 import "./style.scss";
 
-export const FormInput = ({ label, error, errorStyle, ...otherProps }) => {
+export const FormInput = ({ label, errorFields, ...otherProps }) => {
   const { value } = otherProps;
 
-  errorStyle = error ? true : errorStyle;
-
+  const errorStyle = errorFields && errorFields.includes(otherProps.name);
   const shrinkClass =
     value && typeof value === "string" && value.length ? "shrink" : "";
 
@@ -14,7 +13,6 @@ export const FormInput = ({ label, error, errorStyle, ...otherProps }) => {
         className={`form-input ${errorStyle ? "error" : ""}`}
         {...otherProps}
       />
-      {error && <span className="error-message">{error}</span>}
       {label && (
         <label className={`${shrinkClass} form-input-label`}>{label}</label>
       )}

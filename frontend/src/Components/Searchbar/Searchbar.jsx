@@ -22,7 +22,7 @@ export const Searchbar = () => {
         <input
           onBlur={blurHandler}
           onFocus={() => setFocus(true)}
-          placeholder="Search"
+          placeholder="Search for movie titles"
           onChange={(e) => setSearch(encodeURIComponent(e.target.value))}
           type="text"
           value={decodeURIComponent(search)}

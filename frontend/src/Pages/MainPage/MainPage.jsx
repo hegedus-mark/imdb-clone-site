@@ -1,34 +1,30 @@
 import "./style.scss";
 import { Carousel } from "../../Components";
-import { useFetchData } from "../../Hooks/";
+import { useFetchMovies } from "../../Hooks/";
+
+const requests = [
+  { category: "popular", url: "api/movies?category=popular" },
+  { category: "nowPlaying", url: "api/movies?category=now_playing" },
+];
 
 export const MainPage = () => {
-  const { data, error, loading } = useFetchData(
-    true,
-    "/api/movies?category=popular",
-    "GET"
-  );
-  const {
-    data: playData,
-    error: playError,
-    loading: playLoading,
-  } = useFetchData(true, "/api/movies?category=now_playing", "GET");
+  const { data, loading, error } = useFetchMovies(requests);
 
-  return loading && playLoading ? (
-    <h1>Please wait Loading</h1>
-  ) : error && playError ? (
-    <h1>{playError ? playError : error}</h1>
-  ) : (
-    data &&
-    playData && (
-      <div className="mainpage-container">
-        <div className="popular-movies">
-          <Carousel items={data.results} category={"Popular"} />
-        </div>
-        <div className="nowPlaying-movies">
-          <Carousel items={playData.results} category={"Now Playing"} />
-        </div>
+  if (loading) return <h1>Please wait Loading</h1>;
+  if (error) return <h1>{error.message}</h1>;
+
+  console.log("movie_data, ", data);
+
+  return (
+    <div className="mainpage-container">
+      <div className="popular-movies">
+        <Carousel items={data.popular} category={"Popular"} />
       </div>
-    )
+      <div className="nowPlaying-movies">
+        <Carousel items={data.nowPlaying} category={"Now Playing"} />
+      </div>
+    </div>
   );
 };
+
+

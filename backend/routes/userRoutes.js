@@ -12,6 +12,13 @@ import { verifyToken } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/:userId/profile", verifyToken, validateUser, getProfile);
+router.put(
+  "/:userId/change-password",
+  verifyToken,
+  validateUser,
+  changePassword
+);
+
 router.get("/:userId/watchlist", verifyToken, validateUser, getWatchList);
 router.post(
   "/:userId/watchlist/:tmdbId",
@@ -24,12 +31,6 @@ router.delete(
   verifyToken,
   validateUser,
   removeMovieFromWatchList
-);
-router.put(
-  "/:userId/change-password",
-  verifyToken,
-  validateUser,
-  changePassword
 );
 
 export default router;
