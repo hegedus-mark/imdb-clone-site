@@ -6,12 +6,13 @@ import { BASE_URL, TMDB_OPTIONS } from "../config/tmdbConfig.js";
 
 
 export const getMovies = async (req, res) => {
-  const { category } = req.query;
-  const url = `${BASE_URL}/movie/${category}?language=en-US&page=1`;
+  const { category, page } = req.query;
+  let reqPage = page ? page : 1;
+  const url = `${BASE_URL}/movie/${category}?language=en-US&page=${reqPage}`;
   try {
     const movies = await fetchMovies(url, TMDB_OPTIONS);
-    await saveMoviesToDB(movies);
-    res.json({ results: movies });
+    await saveMoviesToDB(movies.results);
+    res.json(movies);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch movies" });
   }

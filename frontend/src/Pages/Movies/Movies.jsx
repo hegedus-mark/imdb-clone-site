@@ -1,20 +1,40 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { SideBar, MoviesContainer, Pagination, Loading } from "../../Components";
+import {
+  SideBar,
+  MoviesContainer,
+  Pagination,
+  Loading,
+} from "../../Components";
 import { useFetchMovies } from "../../Hooks";
 
 import "./style.scss";
+import { fetchMovies } from "../../../../backend/utils/fetchMovies";
 
 export const Movies = () => {
-  const [categoryName, setCategoryName] = useState("Popular");
-  const genre = useParams();
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const url = genre.genre
-    ? `/api/genres/${genre.genre}`
-    : "/api/movies?category=popular";
+  const [categoryName, setCategoryName] = useState("All the");
+  const { genre } = useParams();
+  const [shownPage, setShownPage] = useState(1);
+  const [url, setUrl] = useState(
+    `/api/movies?category=popular&page=${shownPage}`
+  );
   const { movies, loading, error, totalPages } = useFetchMovies(url);
+
+  useEffect(() => {
+    if (!genre) {
+      setUrl(`/api/movies?category=popular&page=${shownPage}`);
+    } else {
+      setUrl(`/api/genres/${genre}?page=${shownPage}`);
+    }
+  }, [shownPage, genre]);
+
+  useEffect(() => {
+    fetchMovies(url);
+  }, [url]);
+
+  console.log("genre", genre);
+  console.log("url", url);
 
   if (loading) return <Loading />;
   if (error) return <h1>{error.message}</h1>;
@@ -30,7 +50,11 @@ export const Movies = () => {
               {(categoryName + " " + "Movies").toUpperCase()}{" "}
             </h1>
             <MoviesContainer movies={movies} />
-            <Pagination totalPages={totalPages} currentPage={currentPage} />
+            <Pagination
+              totalPages={totalPages}
+              currentPage={shownPage}
+              onPageChange={setShownPage}
+            />
           </div>
           <SideBar setCategoryName={setCategoryName} />
         </Fragment>
