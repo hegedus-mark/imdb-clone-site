@@ -51,7 +51,7 @@ export const searchMovie = async (req, res) => {
   const url = `${BASE_URL}/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
   try {
     const movies = await fetchMovies(url, TMDB_OPTIONS);
-    res.json({ results: movies });
+    res.json({ results: movies.results });
   } catch (err) {
     res.status(506).json({ message: "Failed to search movie" });
   }
