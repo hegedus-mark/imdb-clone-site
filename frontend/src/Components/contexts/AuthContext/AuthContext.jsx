@@ -15,15 +15,33 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isItLoggedIn, setIsItLoggedIn] = useState(false);
 
+  const fetchRefreshToken = async () => {
+    const response = await fetch("/api/auth/refresh-token", {
+      method: "POST",
+      credentials: "include",
+    });
+    if (response.ok) {
+      const { accessToken } = await response.json();
+      refreshToken(accessToken);
+    } else {
+      logout();
+    }
+  };
+
   useEffect(() => {
     //For testing
-/*     localStorage.removeItem("user");
+    /*     localStorage.removeItem("user");
     localStorage.removeItem("token"); */
 
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
-    console.log("token", storedToken);
-    console.log("user", storedUser);
+
+    const checkRefresh = async () => {
+      if (storedToken) {
+        await fetchRefreshToken();
+      }
+    };
+    checkRefresh();
 
     if (storedToken && storedUser) {
       setToken(storedToken);
@@ -31,6 +49,11 @@ export const AuthProvider = ({ children }) => {
       setIsItLoggedIn(true);
     }
   }, []);
+
+  const refreshToken = (token) => {
+    localStorage.setItem("token", token);
+    setToken(token);
+  };
 
   const login = (token, user) => {
     localStorage.setItem("token", token);
@@ -83,7 +106,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, user, isItLoggedIn, error, logout, authoriseUser }}
+      value={{
+        token,
+        user,
+        isItLoggedIn,
+        error,
+        logout,
+        authoriseUser,
+        fetchRefreshToken
+      }}
     >
       {children}
     </AuthContext.Provider>

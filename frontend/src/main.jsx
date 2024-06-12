@@ -78,7 +78,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <WatchlistProvider>
         <ToastProvider>
-          <RouterProvider router={routing} />
+          <RouterProvider router={routing}></RouterProvider>
         </ToastProvider>
       </WatchlistProvider>
     </AuthProvider>

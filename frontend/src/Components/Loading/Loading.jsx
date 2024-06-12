@@ -8,7 +8,7 @@ export const Loading = () => {
           key={i}
           style={{ animationDelay: `${i * 0.2}s` }}
           className="teeth-loading"
-          src="images/teeth.png"
+          src="/images/teeth.png"
         ></img>
       ))}
       <h1>Brushing Up Some Data...</h1>

@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { changePassword } from "../../Services";
-import { useFetchData, useAuth } from "../../Hooks";
+import { useAuth, useToast, useFetchData } from "../../Hooks";
 import { ChangePasswordForm, Loading } from "../../Components";
 
 import "./style.scss";
@@ -13,14 +13,10 @@ const confirmPassword = (newPassword, confirmNewPassword) => {
 
 export const Profile = () => {
   const { userId } = useParams();
-  const { token, logout } = useAuth();
-  const { data, loading, error } = useFetchData(
-    true,
-    `/api/user/${userId}/profile`,
-    "GET",
-    null,
-    token
-  );
+  const { logout, token, fetchRefreshToken } = useAuth();
+  const url = `/api/user/${userId}/profile`;
+  const { data, loading, error } = useFetchData(true, url, "GET", null, token);
+  const { showErrorToast, showSuccessToast } = useToast();
   const [showChangePassword, setShowChangePassword] = useState(false);
 
   const handlePasswordSubmit = async (
@@ -29,7 +25,7 @@ export const Profile = () => {
     currentPassword
   ) => {
     if (!confirmPassword(newPassword, confirmNewPassword)) {
-      alert("Passwords do not match");
+      showErrorToast("Passwords do not match");
       return;
     }
     const response = await changePassword(
@@ -40,14 +36,13 @@ export const Profile = () => {
     );
 
     if (response.ok) {
-      alert("Password changed successfully");
+      showSuccessToast("Password changed successfully");
       setShowChangePassword(false);
     } else {
-      alert(response.statusText);
+      showErrorToast(response.statusText);
     }
     console.log(response);
   };
-
   let user;
   if (data) {
     user = data.user;
