@@ -24,7 +24,6 @@ export const useFetchData = (
     })
       .then((response) => response.json())
       .then((jsonData) => {
-        console.log("recieved:", jsonData);
         setData(jsonData);
         setLoading(false);
       })
@@ -41,4 +40,3 @@ export const useFetchData = (
 
   return { data, loading, error, fetchData };
 };
-

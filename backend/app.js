@@ -20,5 +20,7 @@ app.use(timingMiddleware);
 app.use("/api/auth", authRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/rating", ratingRoutes);
+app.use("/api/genre", genresRoutes);
 
 export default app;

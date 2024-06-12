@@ -9,3 +9,5 @@ export * from "./contexts/AuthContext/AuthContext";
 export * from "./PrivateRoute/PrivateRoute";
 export * from "./GuestOnlyRoute/GuestOnlyRoute";
 export * from "./ChangePasswordForm/ChangePasswordForm";
+export * from "./Rating/Rating";
+export * from "./SideBar/SideBar";

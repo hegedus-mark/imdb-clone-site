@@ -1,4 +1,5 @@
 .movie-card {
+  cursor: pointer;
   padding: 1rem;
   .movie-card-inner {
     border-radius: 10px;
@@ -6,23 +7,22 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    transition: 0.3s;
     &:hover {
       z-index: 1;
-      filter: brightness(1);
-      scale: 1.01;
+      filter: brightness(1.2);
+      scale: 1.02;
     }
 
     .poster {
       position: relative;
       width: 100%;
       transition: 0.3s;
-      cursor: pointer;
+
       filter: brightness(0.8);
       img {
         width: 100%;
       }
-      
     }
 
     .ribbon-btn {
@@ -46,11 +46,11 @@
     .poster-footer {
       background-color: #121212;
       height: 100px;
-      width: 100%;;
+      width: 100%;
       border-radius: 0 0 10px 10px;
 
-      div{
-        margin: 5px
+      div {
+        margin: 5px;
       }
     }
   }

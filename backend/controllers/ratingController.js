@@ -1,6 +1,6 @@
-import { response } from "express";
 import { errorMiddleware } from "../middleware/errorMiddleware.js";
 import Rating from "../models/Rating.js";
+import User from "../models/User.js";
 
 export const getRatings = (req, res) => {
   Rating.find()
@@ -10,6 +10,7 @@ export const getRatings = (req, res) => {
 
 export const createRating = (req, res) => {
   const rating = req.body;
+  console.log(rating);
   Rating.create(rating)
     .then((rating) => {
       rating.save();
@@ -35,14 +36,26 @@ export const getByMovieId = (req, res) => {
 };
 
 export const changeRating = (req, res) => {
-  const ID = req.params.ratingId;
-  console.log("rateId");
   const newRating = req.body;
-  Rating.findById(ID)
-    .then((data) => {
-      data.rating = newRating.rating;
-      data.save();
-      res.json({ message: "Rating was changed" });
+  console.log(newRating);
+
+  Rating.findOneAndUpdate(
+    { movieId: newRating.movieId, userId: newRating.userId },
+    { rating: newRating.rating }
+  )
+    .then((updatedData) => {
+      if (!updatedData) {
+        return res.status(404).send({ message: "Rating not found" });
+      }
+      res.json({ message: "Rating was updated", updatedData });
     })
+    .catch((err) => errorMiddleware(err, res));
+};
+
+export const deleteRating = (req, res) => {
+  const ID = req.params.ratingId;
+  console.log(ID);
+  Rating.findByIdAndDelete(ID)
+    .then((response) => res.json({ message: "Rating was removed" }))
     .catch((err) => errorMiddleware(err, res));
 };

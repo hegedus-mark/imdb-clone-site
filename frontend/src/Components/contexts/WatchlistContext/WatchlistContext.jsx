@@ -10,7 +10,7 @@ export const WatchlistContext = createContext({
 });
 
 const fetchProtectedData = async (url, method, token) => {
-  console.log(`Starting request to ${url} with method ${method}`);
+  /* console.log(`Starting request to ${url} with method ${method}`); */
   const startTime = performance.now();
 
   const response = await fetch(url, {
@@ -21,7 +21,7 @@ const fetchProtectedData = async (url, method, token) => {
   });
 
   const connectTime = performance.now();
-  console.log(`Connected to ${url} in ${connectTime - startTime}ms`);
+  /* console.log(`Connected to ${url} in ${connectTime - startTime}ms`); */
 
   if (!response.ok) {
     throw new Error("Failed to fetch data");
@@ -29,7 +29,7 @@ const fetchProtectedData = async (url, method, token) => {
 
   const data = await response.json();
   const endTime = performance.now();
-  console.log(`Received response from ${url} in ${endTime - startTime}ms`);
+  /* console.log(`Received response from ${url} in ${endTime - startTime}ms`); */
 
   return data;
 };
@@ -50,7 +50,7 @@ export const WatchlistProvider = ({ children }) => {
       setWatchList(data.results.map((m) => m.tmdb_id));
 
       setLoading(false);
-      console.log("data received - watchlist", data);
+      /* console.log("data received - watchlist", data); */
     };
     try {
       fetchWatchList();

@@ -44,7 +44,7 @@ export const MoviePage = () => {
               <h4>{videoError}</h4>
             ) : videoData && trailerKey ? (
               <iframe
-                allowFullScreen="true"
+                allowFullScreen={true}
                 className="trailer"
                 src={`${baseYTUrl}${trailerKey}`}
               ></iframe>
@@ -58,7 +58,7 @@ export const MoviePage = () => {
             return <button key={genre.id}>{genre.name}</button>;
           })}
         </div>
-        <Rating />
+        <Rating movieId={data.id} />
       </div>
     )
   );

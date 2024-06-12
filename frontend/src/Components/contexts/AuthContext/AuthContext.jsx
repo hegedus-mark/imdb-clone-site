@@ -22,8 +22,8 @@ export const AuthProvider = ({ children }) => {
 
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
-    console.log("token", storedToken);
-    console.log("user", storedUser);
+    /*     console.log("token", storedToken);
+    console.log("user", storedUser); */
 
     if (storedToken && storedUser) {
       setToken(storedToken);
@@ -70,10 +70,10 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      console.log("data received", data);
+      /* console.log("data received", data); */
       login(data.token, data.user);
-      console.log("Success:", data.token);
-      console.log("user", data.user);
+      /* console.log("Success:", data.token); */
+      /* console.log("user", data.user); */
       return { ok: true, message: "Great Success!!" };
     } catch (error) {
       console.error("Error:", error);

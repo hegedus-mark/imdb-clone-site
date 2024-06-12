@@ -2,6 +2,7 @@ import express from "express";
 import {
   changeRating,
   createRating,
+  deleteRating,
   getByMovieId,
   getByUserId,
   getRatings,
@@ -13,6 +14,7 @@ router.get("/", getRatings);
 router.get("/:userId", getByUserId);
 router.get("/:movieId", getByMovieId);
 router.post("/", createRating);
-router.put("/:ratingId", changeRating);
+router.put("/", changeRating);
+router.delete("/:ratingId", deleteRating);
 
 export default router;
