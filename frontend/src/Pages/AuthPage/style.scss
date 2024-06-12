@@ -3,6 +3,13 @@ $interface-color: #032541;
 $hover-color: #16b7db;
 $text-color: #ffffff;
 
+.auth-page {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  background: black;
+  overflow: hidden;
+}
 .authentication-container {
   display: flex;
   position: relative;
@@ -18,7 +25,7 @@ $text-color: #ffffff;
 }
 
 /* CSS */
-.authButtons {
+.fancy-button {
   appearance: none;
   background-color: $interface-color;
   border: 2px solid #1a1a1a;

@@ -1,0 +1,10 @@
+.movies-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .movie-card {
+    margin: 10px 0;
+    width: calc(100% / 6 - 20px);
+  }
+}

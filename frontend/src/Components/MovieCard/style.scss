@@ -9,20 +9,23 @@
 
     &:hover {
       z-index: 1;
-      filter: brightness(1);
       scale: 1.01;
     }
 
     .poster {
       position: relative;
       width: 100%;
+      background-color: #121212;
       transition: 0.3s;
       cursor: pointer;
-      filter: brightness(0.8);
+
+      &:hover img {
+        filter: brightness(1);
+      }
       img {
         width: 100%;
+        filter: brightness(0.8);
       }
-      
     }
 
     .ribbon-btn {
@@ -46,11 +49,11 @@
     .poster-footer {
       background-color: #121212;
       height: 100px;
-      width: 100%;;
+      width: 100%;
       border-radius: 0 0 10px 10px;
 
-      div{
-        margin: 5px
+      div {
+        margin: 5px;
       }
     }
   }

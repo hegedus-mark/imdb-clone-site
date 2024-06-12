@@ -1,40 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-/**
- * Fetches data from multiple requests and updates the state with the results.
- *
- * @param {Array} requests - An array of objects containing the URL and category for each request.
- *
- * Each object should have a 'url' and 'category' property.
- *
- * For example:
- *   - { url: 'https://api.example.com/movies', category: 'movies' }
- * @return {Object} An object with the following properties:
- *   - data: An object containing the fetched data for each request.
- *   - loading: A boolean indicating whether the data is currently being fetched.
- *   - error: An error object if an error occurred during the fetch.
- */
-export const useFetchMovies = (requests) => {
-  const [error, setError] = useState(null);
+export const useFetchMovies = (url) => {
+  const [movies, setMovies] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState({});
-
-  const fetchData = async (request) => {
+  const [error, setError] = useState(null);
+  const fetchMovies = async (url) => {
     setLoading(true);
     try {
-      const response = await fetch(request.url);
-      const movies = await response.json().then((data) => data.results);
-      setData((prevData) => ({ ...prevData, [request.category]: movies }));
+      const response = await fetch(url);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+      setMovies(data.results);
+      data.total_pages && setTotalPages(data.total_pages);
     } catch (error) {
-      setError(error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    Promise.all(requests.map((request) => fetchData(request)))
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-  }, [requests]);
+    fetchMovies(url);
+  }, [url]);
 
-  return { data, loading, error };
+  return { movies, loading, error, totalPages, fetchMovies };
 };

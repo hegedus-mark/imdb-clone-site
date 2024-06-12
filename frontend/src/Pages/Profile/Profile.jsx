@@ -5,6 +5,8 @@ import { changePassword } from "../../Services";
 import { useFetchData, useAuth } from "../../Hooks";
 import { ChangePasswordForm } from "../../Components";
 
+import "./style.scss";
+
 const confirmPassword = (newPassword, confirmNewPassword) => {
   return newPassword === confirmNewPassword;
 };
@@ -60,28 +62,42 @@ export const Profile = () => {
   }
 
   return (
-    <div>
-      <h1>Profile</h1>
+    <div className="profile-page">
       {user && (
-        <div>
-          <div>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-            <p>DisplayName: {user.displayName}</p>
+        <div className="profile-container">
+          <div className="user-profile">
+            <h1>Profile</h1>
+            <p>
+              <span className="highlight">Username:</span> {user.username}
+            </p>
+            <p>
+              <span className="highlight">Email:</span> {user.email}
+            </p>
+            <p>
+              <span className="highlight">Display Name:</span>{" "}
+              {user.displayName}
+            </p>
           </div>
-          <div>
-            {!showChangePassword ? (
-              <button onClick={() => setShowChangePassword(true)}>
-                Change Password
-              </button>
-            ) : (
-              <ChangePasswordForm
-                setShowChangePassword={setShowChangePassword}
-                changePassword={handlePasswordSubmit}
-              />
-            )}
+          <div className="change-password">
+            <div>
+              {!showChangePassword ? (
+                <button
+                  className="fancy-button"
+                  onClick={() => setShowChangePassword(true)}
+                >
+                  Change Password
+                </button>
+              ) : (
+                <ChangePasswordForm
+                  setShowChangePassword={setShowChangePassword}
+                  changePassword={handlePasswordSubmit}
+                />
+              )}
+            </div>
           </div>
-          <button onClick={() => logout()}>Logout</button>
+          <button className="fancy-button logout" onClick={() => logout()}>
+            Logout
+          </button>
         </div>
       )}
     </div>

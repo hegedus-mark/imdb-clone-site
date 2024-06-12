@@ -1,7 +1,8 @@
-import React from "react";
 import { MovieCard } from "../MovieCard/MovieCard";
 
-export const MoviesContainer = ({ movies }) => {
+import "./style.scss";
+
+export const MoviesContainer = ({ movies}) => {
   return (
     <div className="movies-container">
       {movies.map((movie) => (

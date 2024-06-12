@@ -1,6 +1,6 @@
 import "./style.scss";
 import { Carousel } from "../../Components";
-import { useFetchMovies } from "../../Hooks/";
+import { useFetchMain } from "../../Hooks/";
 
 const requests = [
   { category: "popular", url: "api/movies?category=popular" },
@@ -8,7 +8,7 @@ const requests = [
 ];
 
 export const MainPage = () => {
-  const { data, loading, error } = useFetchMovies(requests);
+  const { data, loading, error } = useFetchMain(requests);
 
   if (loading) return <h1>Please wait Loading</h1>;
   if (error) return <h1>{error.message}</h1>;
@@ -26,5 +26,3 @@ export const MainPage = () => {
     </div>
   );
 };
-
-
