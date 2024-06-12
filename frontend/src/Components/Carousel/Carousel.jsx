@@ -43,7 +43,7 @@ export function Carousel({ items, category }) {
 
   return (
     <div className="movie-carousel">
-      <h1>{category.toUpperCase()}</h1>
+      <h1 className="category-name">{category.toUpperCase()}</h1>
       <Slider {...settings}>
         {items.map((movie) => (
           <div className="cards" key={movie.id}>

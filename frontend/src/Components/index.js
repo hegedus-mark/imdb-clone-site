@@ -11,3 +11,5 @@ export * from "./GuestOnlyRoute/GuestOnlyRoute"
 export * from "./ChangePasswordForm/ChangePasswordForm";
 export * from "./SideBar/SideBar";
 export * from "./MoviesContainer/MoviesContainer";
+export * from "./Pagination/Pagination"
+export * from "./Loading/Loading"

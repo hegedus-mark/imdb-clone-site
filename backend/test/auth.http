@@ -1,4 +1,6 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY0Y2QyMTg4MjM4ZGQwZWFmMjk0MTQiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxODA5MzkzOCwiZXhwIjoxNzE4MDk3NTM4fQ.HxMuJSjoFYe6kQifNnhtDsuOBWfvDv8lwAHwWh-gvp4
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY0Y2QyMTg4MjM4ZGQwZWFmMjk0MTQiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxODIxNTU5MSwiZXhwIjoxNzE4MjE5MTkxfQ.K5U1uG_N1c2DHvHbXbfrUakInvUSZu34abJ0XQLW_JM
+
+@refreshTokenCookie = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY0Y2QyMTg4MjM4ZGQwZWFmMjk0MTQiLCJ1c2VybmFtZSI6InBpdHl1MiIsImlhdCI6MTcxODIxNTU5MSwiZXhwIjoxNzIwODA3NTkxfQ.8HXZkwfjrKt6akQLCq9H1V7eelq5o8NfCv0wW4vMCHw
 
 @userId = 6664cd2188238dd0eaf29414
 
@@ -58,3 +60,8 @@ Authorization: Bearer {{token}}
 //remove a movie from the watchlist
 DELETE http://localhost:6969/api/user/{{userId}}/watchlist/1041613
 Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:6969/api/auth/refresh-token
+Cookie: refreshToken={{refreshTokenCookie}}

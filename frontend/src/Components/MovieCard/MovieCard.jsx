@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import { Eye } from "../../assets/eye";
 import { useWatchlist, useAuth, useToast } from "../../Hooks";
 import "./style.scss";
 
@@ -8,12 +8,17 @@ export const MovieCard = ({ detailedMovieData }) => {
   const navigate = useNavigate();
   const { addToWatchList, removeFromWatchList, watchList } = useWatchlist();
   const { isItLoggedIn } = useAuth();
-  const { showWarningToast } = useToast();
+  const { showWarningToast, showInfoToast } = useToast();
 
-  const inWatchList = watchList.includes(detailedMovieData.id);
+  const inWatchList =
+    watchList.includes(detailedMovieData.id) ||
+    watchList.includes(detailedMovieData.tmdb_id);
 
   const posterClickHandler = () => {
-    navigate(`/movie/${detailedMovieData.id}`);
+    const id = detailedMovieData.id
+      ? detailedMovieData.id
+      : detailedMovieData.tmdb_id;
+    navigate(`/movie/${id}`);
   };
 
   const handleRibbonClick = async (movie) => {
@@ -23,8 +28,10 @@ export const MovieCard = ({ detailedMovieData }) => {
     }
     if (!inWatchList) {
       await addToWatchList(movie);
+      showInfoToast(`${movie.title} added to watchlist`);
     } else {
       await removeFromWatchList(movie);
+      showInfoToast(`${movie.title} removed from watchlist`);
     }
   };
 
@@ -33,10 +40,10 @@ export const MovieCard = ({ detailedMovieData }) => {
       <div className="movie-card-inner">
         <div className="poster">
           <button
-            className="ribbon-btn"
+            className={"ribbon-btn" + (inWatchList ? " in-watchlist" : "")}
             onClick={() => handleRibbonClick(detailedMovieData)}
           >
-            {inWatchList ? "-" : "+"}
+            {inWatchList ? <Eye /> : "+"}
           </button>
           <img
             onClick={posterClickHandler}

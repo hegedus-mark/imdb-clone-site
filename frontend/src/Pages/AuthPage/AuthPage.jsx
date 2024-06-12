@@ -3,9 +3,11 @@ import "./style.scss";
 
 export const AuthPage = () => {
   return (
-    <div className="authentication-container">
-      <SignIn />
-      <SignUp />
+    <div className="auth-page">
+      <div className="authentication-container">
+        <SignIn />
+        <SignUp />
+      </div>
     </div>
   );
 };

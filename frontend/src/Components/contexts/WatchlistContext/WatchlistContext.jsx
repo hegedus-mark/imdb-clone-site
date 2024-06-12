@@ -9,6 +9,7 @@ export const WatchlistContext = createContext({
   fetchWatchList: async () => null,
 });
 
+
 const fetchProtectedData = async (url, method, token) => {
   console.log(`Starting request to ${url} with method ${method}`);
   const startTime = performance.now();
@@ -36,38 +37,45 @@ const fetchProtectedData = async (url, method, token) => {
 
 export const WatchlistProvider = ({ children }) => {
   const [watchList, setWatchList] = useState([]);
+  const [populatedWatchList, setPopulatedWatchList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const { token, user } = useAuth();
+  const fetchWatchList = async (page = 1) => {
+    setLoading(true);
+    const data = await fetchProtectedData(
+      `/api/user/${user.userId}/watchlist?page=${page}`,
+      "GET",
+      token
+    );
+    setWatchList(data.ids);
+    setPopulatedWatchList(data.results);
+    setTotalPages(data.total_pages);
+
+    setLoading(false);
+    console.log("data received - watchlist", data);
+  };
 
   useEffect(() => {
     if (!user) return;
-    const fetchWatchList = async () => {
-      const data = await fetchProtectedData(
-        `/api/user/${user.userId}/watchlist`,
-        "GET",
-        token
-      );
-      setWatchList(data.results.map((m) => m.tmdb_id));
-
-      setLoading(false);
-      console.log("data received - watchlist", data);
-    };
     try {
-      fetchWatchList();
+      fetchWatchList(page);
     } catch (error) {
       console.error(error);
     }
-  }, [user, token]);
+  }, [user, token, page]);
 
   const addToWatchList = async (movie) => {
     setLoading(true);
     try {
+      const id = movie.id ? movie.id : movie.tmdb_id;
       await fetchProtectedData(
-        `/api/user/${user.userId}/watchlist/${movie.id}`,
+        `/api/user/${user.userId}/watchlist/${id}`,
         "POST",
         token
       );
-      setWatchList([...watchList, movie.id]);
+      await fetchWatchList(page);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -77,12 +85,13 @@ export const WatchlistProvider = ({ children }) => {
   const removeFromWatchList = async (movie) => {
     setLoading(true);
     try {
+      const id = movie.id ? movie.id : movie.tmdb_id;
       await fetchProtectedData(
-        `/api/user/${user.userId}/watchlist/${movie.id}`,
+        `/api/user/${user.userId}/watchlist/${id}`,
         "DELETE",
         token
       );
-      setWatchList(watchList.filter((m) => m !== movie.id));
+      await fetchWatchList(page);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -91,9 +100,14 @@ export const WatchlistProvider = ({ children }) => {
 
   const value = {
     watchList,
+    populatedWatchList,
     addToWatchList,
     removeFromWatchList,
+    fetchWatchList,
+    totalPages,
+    page,
     loading,
+    setPage,
   };
 
   return (
