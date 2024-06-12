@@ -1,5 +1,5 @@
 import "./style.scss";
-import { Carousel } from "../../Components";
+import { Carousel, Loading } from "../../Components";
 import { useFetchMain } from "../../Hooks/";
 
 const requests = [
@@ -10,7 +10,7 @@ const requests = [
 export const MainPage = () => {
   const { data, loading, error } = useFetchMain(requests);
 
-  if (loading) return <h1>Please wait Loading</h1>;
+  if (loading) return <Loading />;
   if (error) return <h1>{error.message}</h1>;
 
   console.log("movie_data, ", data);

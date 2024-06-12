@@ -1,10 +1,11 @@
 import { useWatchlist } from "../../Hooks";
+import { Loading } from "../../Components";
 
 export const MyList = () => {
   const { watchList, loading } = useWatchlist();
 
   console.log("watchlist!", watchList);
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
 
   return (
     <div>

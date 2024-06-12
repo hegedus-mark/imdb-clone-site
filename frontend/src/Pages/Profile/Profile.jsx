@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { changePassword } from "../../Services";
 import { useFetchData, useAuth } from "../../Hooks";
-import { ChangePasswordForm } from "../../Components";
+import { ChangePasswordForm, Loading } from "../../Components";
 
 import "./style.scss";
 
@@ -54,7 +54,7 @@ export const Profile = () => {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {

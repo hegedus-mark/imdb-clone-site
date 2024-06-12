@@ -33,7 +33,7 @@ export const useFetchMain = (requests) => {
   useEffect(() => {
     Promise.all(requests.map((request) => fetchData(request)))
       .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+      .finally(() => setTimeout(() => setLoading(false), 3000)); //make sure people see the loading screen :D
   }, [requests]);
 
   return { data, loading, error };

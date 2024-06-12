@@ -1,7 +1,7 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
 
-import { SideBar, MoviesContainer, Pagination } from "../../Components";
+import { SideBar, MoviesContainer, Pagination, Loading } from "../../Components";
 import { useFetchMovies } from "../../Hooks";
 
 import "./style.scss";
@@ -16,7 +16,7 @@ export const Movies = () => {
     : "/api/movies?category=popular";
   const { movies, loading, error, totalPages } = useFetchMovies(url);
 
-  if (loading) return <h1>Please wait Loading</h1>;
+  if (loading) return <Loading />;
   if (error) return <h1>{error.message}</h1>;
 
   return (
