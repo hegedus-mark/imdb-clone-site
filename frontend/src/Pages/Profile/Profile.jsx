@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { changePassword } from "../../Services";
 import { useAuth, useToast, useFetchData } from "../../Hooks";
@@ -13,7 +13,7 @@ const confirmPassword = (newPassword, confirmNewPassword) => {
 
 export const Profile = () => {
   const { userId } = useParams();
-  const { logout, token, fetchRefreshToken } = useAuth();
+  const { logout, token } = useAuth();
   const url = `/api/user/${userId}/profile`;
   const { data, loading, error } = useFetchData(true, url, "GET", null, token);
   const { showErrorToast, showSuccessToast } = useToast();
@@ -41,7 +41,6 @@ export const Profile = () => {
     } else {
       showErrorToast(response.statusText);
     }
-    console.log(response);
   };
   let user;
   if (data) {

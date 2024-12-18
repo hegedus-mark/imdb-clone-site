@@ -29,10 +29,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    //For testing
-    /*     localStorage.removeItem("user");
-    localStorage.removeItem("token"); */
-
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
 
@@ -85,7 +81,6 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       if (!response.ok) {
         console.error("Fail:", data.message);
-        //we will send back an error, for example username is occupied!
         setError(data);
         return {
           ok: false,
@@ -93,10 +88,7 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      /* console.log("data received", data); */
       login(data.token, data.user);
-      /* console.log("Success:", data.token); */
-      /* console.log("user", data.user); */
       return { ok: true, message: "Great Success!!" };
     } catch (error) {
       console.error("Error:", error);

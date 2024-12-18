@@ -10,26 +10,16 @@ export const WatchlistContext = createContext({
 });
 
 const fetchProtectedData = async (url, method, token) => {
-  /* console.log(`Starting request to ${url} with method ${method}`); */
-  const startTime = performance.now();
-
   const response = await fetch(url, {
     method: method,
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  const connectTime = performance.now();
-  /* console.log(`Connected to ${url} in ${connectTime - startTime}ms`); */
-
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
-
   const data = await response.json();
-  const endTime = performance.now();
-  /* console.log(`Received response from ${url} in ${endTime - startTime}ms`); */
 
   return data;
 };
@@ -53,7 +43,6 @@ export const WatchlistProvider = ({ children }) => {
     setTotalPages(data.total_pages);
 
     setLoading(false);
-    console.log("data received - watchlist", data);
   };
 
   useEffect(() => {

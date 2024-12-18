@@ -4,11 +4,10 @@ import "./style.scss";
 import { useRating } from "./useRating";
 
 export const Rating = ({ movieId }) => {
-  const { clickHandler, userRate, ratingId, loading } = useRating(movieId);
+  const { clickHandler, userRate } = useRating(movieId);
 
   return (
     <div className="rating-container">
-      {console.log(userRate, ratingId, loading)}
       <button
         onClick={() => clickHandler(0)}
         className={userRate === 0 && "active-rate-btn"}
