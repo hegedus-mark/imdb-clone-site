@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { SECRET_KEY, REFRESH_KEY } from '../config/sensitiveData.js';
+import { config } from '../config/config.js';
 
 /**
  * Generates a JSON Web Token (JWT) for the given user.
@@ -10,10 +10,17 @@ import { SECRET_KEY, REFRESH_KEY } from '../config/sensitiveData.js';
  * @return {Promise<string>} A promise that resolves to the generated JWT.
  */
 export const generateToken = ({ _id, username }) => {
-  return jwt.sign({ userId: _id, username }, SECRET_KEY, { expiresIn: '1h' });
+  return jwt.sign(
+    { userId: _id, username },
+    config.jwt.secretKey,
+    { expiresIn: '1h' }
+  );
 };
 
-
 export const generateRefreshToken = ({ _id, username }) => {
-  return jwt.sign({ userId: _id, username }, REFRESH_KEY, { expiresIn: '30d' });
-}
+  return jwt.sign(
+    { userId: _id, username },
+    config.jwt.refreshKey,
+    { expiresIn: '30d' }
+  );
+};

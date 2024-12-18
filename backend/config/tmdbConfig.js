@@ -1,10 +1,11 @@
-import { ACCESS_TOKEN } from "./sensitiveData.js";
+import { config } from "./config.js";
+
 
 export const TMDB_OPTIONS = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization: `Bearer ${ACCESS_TOKEN}`,
+    Authorization: `Bearer ${config.tmdb.accessToken}`,
   },
 };
 
