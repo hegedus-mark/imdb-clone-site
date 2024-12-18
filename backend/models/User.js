@@ -9,11 +9,9 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   displayName: { type: String, required: true },
-  refreshToken: { type: String },
   watchlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
-//This is a middleware that makes sure the passwords are awlways hashed before storing them in the database!
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   try {
@@ -25,7 +23,11 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-//This is the way to compare the passwords!
+/**
+ * Compares the given password with the hashed password stored in the User document.
+ * @param {string} password - The password to compare.
+ * @returns {Promise<boolean>} - A promise that resolves with true if the passwords match, false otherwise.
+ */
 UserSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };

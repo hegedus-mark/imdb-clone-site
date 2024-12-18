@@ -17,6 +17,7 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 app.use(timingMiddleware);
+app.use(errorHandler);
 
 // Routes
 app.use("/api/auth", authRoutes);
