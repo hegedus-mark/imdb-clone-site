@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken"
 import { generateToken } from "../utils/generateToken.js";
 import { generateRefreshToken } from "../utils/generateToken.js";
 import { asyncHandler } from "../middleware/asyncHandler.js";
+import { AppError } from "../errors/AppError.js";
+import { config } from "../config/config.js";
 
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -98,7 +100,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(refreshToken, REFRESH_KEY);
+    const decoded = jwt.verify(refreshToken, config.jwt.refreshKey);
     const user = await User.findById(decoded.userId);
 
     if (!user) {

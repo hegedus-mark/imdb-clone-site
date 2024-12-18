@@ -12,7 +12,9 @@ import { errorHandler } from './middleware/errorHandler.js'
 const app = express();
 
 // Connect to MongoDB
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
 // Express Middlewares
 app.use(express.json());
