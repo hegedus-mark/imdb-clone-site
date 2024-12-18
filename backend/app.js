@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import genresRoutes from "./routes/genresRoutes.js";
 import { timingMiddleware } from "./middleware/logging.js";
+import { errorHandler } from './middleware/errorHandler.js'
 
 const app = express();
 

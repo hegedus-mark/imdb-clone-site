@@ -1,8 +1,8 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken"
-import { REFRESH_KEY } from "../config/sensitiveData.js";
 import { generateToken } from "../utils/generateToken.js";
 import { generateRefreshToken } from "../utils/generateToken.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
