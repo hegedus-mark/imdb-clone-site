@@ -1,58 +1,80 @@
-import { fetchMovies } from "../utils/fetchMovies.js";
+import { TMDB_OPTIONS, TMDB_URLS, buildTMDBUrl } from "../config/tmdbConfig.js";
 import { saveMoviesToDB } from "../utils/saveMovies.js";
-import { BASE_URL, TMDB_OPTIONS } from "../config/tmdbConfig.js";
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { AppError } from '../errors/AppError.js';
 
+export const getMovies = asyncHandler(async (req, res) => {
+  const { category, page = 1 } = req.query;
 
-
-
-export const getMovies = async (req, res) => {
-  const { category, page } = req.query;
-  let reqPage = page ? page : 1;
-  const url = `${BASE_URL}/movie/${category}?language=en-US&page=${reqPage}`;
-  try {
-    const movies = await fetchMovies(url, TMDB_OPTIONS);
-    await saveMoviesToDB(movies.results);
-    res.json(movies);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch movies" });
+  if (!category) {
+    throw new AppError('Category is required', 400);
   }
-};
 
-export const getMovieTrailer = async (req, res) => {
-  const ID = req.params.id;
-  const url = `${BASE_URL}/movie/${ID}/videos?language=en-US`;
-  try {
-    const response = await fetch(url, TMDB_OPTIONS);
-    const json = await response.json();
-    res.json(json);
-  } catch (err) {
-    res.status(506).json({ message: "Failed to fetch trailer" });
+  const url = buildTMDBUrl(`${TMDB_URLS.MOVIE}/${category}`, {
+    language: 'en-US',
+    page
+  });
+
+  const response = await fetch(url, TMDB_OPTIONS);
+  if (!response.ok) {
+    throw new AppError('Failed to fetch movies', response.status);
   }
-};
 
-export const getMovie = async (req, res) => {
+  const data = await response.json();
+  await saveMoviesToDB(data.results);
+  res.json(data);
+});
+
+export const getMovieTrailer = asyncHandler(async (req, res) => {
+  const movieId = req.params.id;
+  const url = buildTMDBUrl(`${TMDB_URLS.MOVIE}/${movieId}/videos`, {
+    language: 'en-US'
+  });
+
+  const response = await fetch(url, TMDB_OPTIONS);
+  if (!response.ok) {
+    throw new AppError('Failed to fetch trailer', response.status);
+  }
+
+  const data = await response.json();
+  res.json(data);
+});
+
+export const getMovie = asyncHandler(async (req, res) => {
+  const movieId = req.params.id;
   const { saveMovie = false } = req.query;
-  const ID = req.params.id;
-  const url = `${BASE_URL}/movie/${ID}`;
-  try {
-    const response = await fetch(url, TMDB_OPTIONS);
-    const movie = await response.json();
-    if (saveMovie) await saveMoviesToDB(movie);
-    res.json(movie);
-  } catch (err) {
-    res.status(506).json({ message: "Failed to fetch movie" });
+
+  const url = buildTMDBUrl(`${TMDB_URLS.MOVIE}/${movieId}`);
+
+  const response = await fetch(url, TMDB_OPTIONS);
+  if (!response.ok) {
+    throw new AppError('Failed to fetch movie', response.status);
   }
-};
 
+  const movie = await response.json();
 
-
-export const searchMovie = async (req, res) => {
-  const search = encodeURIComponent(req.params.search);
-  const url = `${BASE_URL}/search/movie?query=${search}&include_adult=true&language=en-US&page=1`;
-  try {
-    const movies = await fetchMovies(url, TMDB_OPTIONS);
-    res.json({ results: movies.results });
-  } catch (err) {
-    res.status(506).json({ message: "Failed to search movie" });
+  if (saveMovie === 'true') {
+    await saveMoviesToDB(movie);
   }
-};
+
+  res.json(movie);
+});
+
+export const searchMovie = asyncHandler(async (req, res) => {
+  const searchQuery = encodeURIComponent(req.params.search);
+
+  const url = buildTMDBUrl(TMDB_URLS.SEARCH, {
+    query: searchQuery,
+    include_adult: true,
+    language: 'en-US',
+    page: 1
+  });
+
+  const response = await fetch(url, TMDB_OPTIONS);
+  if (!response.ok) {
+    throw new AppError('Failed to search movies', response.status);
+  }
+
+  const data = await response.json();
+  res.json({ results: data.results });
+});
