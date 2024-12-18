@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(express.json());
 app.use(cookieParser());
 app.use(timingMiddleware);
-app.use(errorHandler);
+
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -28,5 +28,7 @@ app.use("/api/movies", movieRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/rating", ratingRoutes);
 app.use("/api/genre", genresRoutes);
+
+app.use(errorHandler);
 
 export default app;

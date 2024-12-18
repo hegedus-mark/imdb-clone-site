@@ -5,7 +5,7 @@ export const errorHandler = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     res.status(err.statusCode).json({
       message: err.message,
-      ...(err.formError && { formError: err.formError }),
+      ...(err.formError && err.formError),
       stack: err.stack
     });
     return;
@@ -15,7 +15,7 @@ export const errorHandler = (err, req, res, next) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
       message: err.message,
-      ...(err.formError && { formError: err.formError })
+      ...(err.formError && err.formError)
     });
   } else {
     // Programming or unknown errors
