@@ -1,96 +1,101 @@
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { AppError } from '../errors/AppError.js';
 import Movie from "../models/Movie.js";
-import User from "../models/User.js";
 
-export const changePassword = async (req, res) => {
-  try {
-    const userData = req.userData;
+export const getProfile = asyncHandler(async (req, res) => {
+  const userData = req.userData;
+  const { _id, username, email, displayName } = userData;
 
-    const { currentPassword, newPassword } = req.body;
-    const correctPassword = await userData.comparePassword(currentPassword);
-
-    if (!correctPassword) {
-      return res.status(401).json({ message: "Invalid Credentials", errors: { message: "The given password is incorrect" } });
+  res.json({
+    user: {
+      userId: _id,
+      username,
+      email,
+      displayName
     }
+  });
+});
 
-    userData.password = newPassword;
-    await userData.save();
-    res.json({ message: "Password changed successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+export const changePassword = asyncHandler(async (req, res) => {
+  const userData = req.userData;
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    throw new AppError('Missing required fields', 400, {
+      message: "Both current and new password are required"
+    });
   }
-}
 
-
-export const getProfile = async (req, res) => {
-  try {
-    const userData = req.userData;
-    const { _id, username, email, displayName } = userData;
-    res.json({ user: { userId: _id, username, email, displayName } })
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+  const correctPassword = await userData.comparePassword(currentPassword);
+  if (!correctPassword) {
+    throw new AppError('Invalid Credentials', 401, {
+      message: "The given password is incorrect"
+    });
   }
-}
 
+  userData.password = newPassword;
+  await userData.save();
 
-export const getWatchList = async (req, res) => {
-  const { page } = req.query;
-  const reqPage = page ? page : 1;
+  res.json({ message: "Password changed successfully" });
+});
 
-  try {
-    const userData = req.userData;
-    const populatedUser = await userData.populate("watchlist")
-    const sentWatchList = populatedUser.watchlist.slice((reqPage - 1) * 20, reqPage * 20);
-    const watchListIds = populatedUser.watchlist.map(movie => movie.tmdb_id);
-    res.json({ results: sentWatchList, ids: watchListIds, total_pages: Math.ceil(populatedUser.watchlist.length / 20), page: reqPage });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+export const getWatchList = asyncHandler(async (req, res) => {
+  const { page = 1 } = req.query;
+  const pageSize = 20;
+  const skipAmount = (page - 1) * pageSize;
+
+  const userData = req.userData;
+  const populatedUser = await userData.populate("watchlist");
+
+  // Get total list for IDs
+  const watchListIds = populatedUser.watchlist.map(movie => movie.tmdb_id);
+
+  // Get paginated results
+  const paginatedWatchlist = populatedUser.watchlist
+    .slice(skipAmount, skipAmount + pageSize);
+
+  res.json({
+    results: paginatedWatchlist,
+    ids: watchListIds,
+    total_pages: Math.ceil(populatedUser.watchlist.length / pageSize),
+    page: parseInt(page)
+  });
+});
+
+export const addMovieToWatchList = asyncHandler(async (req, res) => {
+  const userData = req.userData;
+  const tmdbId = parseInt(req.params.tmdbId);
+
+  const movie = await Movie.findOne({ tmdb_id: tmdbId });
+  if (!movie) {
+    throw new AppError('Movie not found', 404);
   }
-}
 
-export const addMovieToWatchList = async (req, res) => {
-  try {
-    const userData = req.userData;
-    const tmdbId = parseInt(req.params.tmdbId);
-    const movie = await Movie.findOne({ tmdb_id: tmdbId });
-    if (!movie) {
-      return res.status(404).json({ message: "Movie not found" });
-    }
-
-    if (userData.watchlist.includes(movie._id)) {
-      return res.status(400).json({ message: "Movie already in watchlist" });
-    }
-    userData.watchlist.push(movie._id);
-    await userData.save();
-    console.log("Movie added to watchlist", movie.title);
-    res.json({ message: "Movie added to watchlist" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to add movie to watchlist", error: error.message });
+  if (userData.watchlist.includes(movie._id)) {
+    throw new AppError('Movie already in watchlist', 400);
   }
-}
 
+  userData.watchlist.push(movie._id);
+  await userData.save();
 
-export const removeMovieFromWatchList = async (req, res) => {
-  try {
-    const userData = req.userData;
-    const tmdbId = parseInt(req.params.tmdbId);
-    const movie = await Movie.findOne({ tmdb_id: tmdbId });
-    if (!movie) {
-      return res.status(404).json({ message: "Movie not found" });
-    }
+  res.json({ message: "Movie added to watchlist" });
+});
 
-    if (!userData.watchlist.includes(movie._id)) {
-      return res.status(400).json({ message: "Movie not in watchlist" });
-    }
-    userData.watchlist.pull(movie._id);
-    await userData.save();
-    console.log("Movie removed from watchlist", movie.title);
-    res.json({ message: "Movie removed from watchlist" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to remove movie from watchlist", error: error.message });
+export const removeMovieFromWatchList = asyncHandler(async (req, res) => {
+  const userData = req.userData;
+  const tmdbId = parseInt(req.params.tmdbId);
+
+  const movie = await Movie.findOne({ tmdb_id: tmdbId });
+  if (!movie) {
+    throw new AppError('Movie not found', 404);
   }
-}
+
+  if (!userData.watchlist.includes(movie._id)) {
+    throw new AppError('Movie not in watchlist', 400);
+  }
+
+  userData.watchlist.pull(movie._id);
+  await userData.save();
+
+  res.json({ message: "Movie removed from watchlist" });
+});
