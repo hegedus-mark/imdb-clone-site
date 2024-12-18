@@ -2,6 +2,8 @@
 
 A full-stack web application that allows users to discover, track, and interact with movies. Built with React and Express.js, leveraging the TMDB API for movie data.
 
+![Demo pic](https://github.com/hegedus-mark/imdb-clone-site/blob/development/githubAssets/website-demo.png?raw=true)
+
 ## Features
 
 - User authentication (login/register)
