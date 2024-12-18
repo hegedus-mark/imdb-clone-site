@@ -37,7 +37,6 @@ export const ToastProvider = ({ children }) => {
   };
 
   const updateToast = (message, type, options) => {
-    console.log(options);
     toast.update(toastId.current, {
       render: message,
       type: type,

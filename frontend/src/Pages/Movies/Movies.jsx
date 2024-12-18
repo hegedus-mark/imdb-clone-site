@@ -10,7 +10,6 @@ import {
 import { useFetchMovies } from "../../Hooks";
 
 import "./style.scss";
-import { fetchMovies } from "../../../../backend/utils/fetchMovies";
 
 export const Movies = () => {
   const [categoryName, setCategoryName] = useState("All the");
@@ -28,13 +27,6 @@ export const Movies = () => {
       setUrl(`/api/genres/${genre}?page=${shownPage}`);
     }
   }, [shownPage, genre]);
-
-  useEffect(() => {
-    fetchMovies(url);
-  }, [url]);
-
-  console.log("genre", genre);
-  console.log("url", url);
 
   if (loading) return <Loading />;
   if (error) return <h1>{error.message}</h1>;

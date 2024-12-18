@@ -36,7 +36,6 @@ export const SignUp = () => {
     setDisabled(true);
 
     if (password !== confirmPassword) {
-      console.log("passwords no matchey matchey");
       setFormError({
         message: "Passwords do not match",
         fields: ["password", "confirmPassword"],

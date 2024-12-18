@@ -13,13 +13,11 @@ export const useSearchbar = () => {
       }
     }, 300);
     return () => {
-      console.log("removed counter");
       clearTimeout(delayDebounce);
     };
   }, [search]);
 
   const blurHandler = () => {
-    console.log("Let's handle blur!");
     setTimeout(() => {
       setFocus(false);
     }, 200);

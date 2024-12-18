@@ -8,8 +8,6 @@ export const changePassword = async (newPassword, currentPassword, userId, token
     },
     body: JSON.stringify({ newPassword: newPassword, currentPassword: currentPassword }),
   });
-/*   const data = await response.json(); */
-/*   console.log("data received", data); */
   return response;
 
 }

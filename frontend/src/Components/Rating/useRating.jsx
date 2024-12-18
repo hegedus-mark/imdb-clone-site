@@ -14,7 +14,6 @@ export const useRating = (movieId) => {
   );
 
   useEffect(() => {
-    console.log(data);
     if (user) {
       if (data && data.length > 1) {
         data.forEach((rating) => {
@@ -22,7 +21,6 @@ export const useRating = (movieId) => {
             rating.userId === user.userId &&
             rating.movieId.toString() === movieId.toString()
           ) {
-            console.log("1", rating);
             setUserRate(rating.rating);
             setRatingId(rating._id);
           }
@@ -33,7 +31,6 @@ export const useRating = (movieId) => {
         data[0].movieId.toString() === movieId.toString()
       ) {
         if (data[0].userId === user.userId) {
-          console.log("2", data);
           setUserRate(data[0].rating);
           setRatingId(data[0]._id);
         }
@@ -48,7 +45,6 @@ export const useRating = (movieId) => {
   }, [ratingId]);
 
   const clickHandler = async (score) => {
-    console.log("aaa", user);
     if (user === null) {
       navigate("/auth");
       return;

@@ -9,13 +9,13 @@ export function NavBar() {
   return (
     <div className="navbar-container">
       <Link to="/newsfeed">
-        <button className="navButton scalingButton"> &#10013; News Feed</button>
+        <button className="navButton scalingButton">News Feed</button>
       </Link>
       <Link to="/movies">
         <button className="navButton scalingButton">Movies</button>
       </Link>
       <Link to="/friends">
-        <button className="navButton scalingButton"> &#10013; Friends</button>
+        <button className="navButton scalingButton"> Friends</button>
       </Link>
       <Link to="/my-list">
         <button className="navButton scalingButton">My list</button>

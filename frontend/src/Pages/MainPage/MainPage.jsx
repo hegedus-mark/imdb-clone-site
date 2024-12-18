@@ -13,8 +13,6 @@ export const MainPage = () => {
   if (loading) return <Loading />;
   if (error) return <h1>{error.message}</h1>;
 
-  console.log("movie_data, ", data);
-
   return (
     <div className="mainpage-container">
       <div className="popular-movies">

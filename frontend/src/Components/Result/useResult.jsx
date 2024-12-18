@@ -7,7 +7,6 @@ export const useResult = (movie, setSearch) => {
   const { data } = useFetchData(true, `/api/movies/${movie.id}`, "GET");
 
   const resultMovieClickHandler = (id) => {
-    console.log("clicked", movie.id);
     navigate(`/movie/${id}`);
     setSearch("");
   };

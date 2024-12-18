@@ -7,19 +7,17 @@ export const Root = () => {
 
   const location = useLocation();
 
-  /* console.log(location.pathname); */
   const showSearchBar =
     location.pathname.startsWith("/movies") ||
     location.pathname === "/" ||
     location.pathname.startsWith("/movie") ||
     location.pathname.startsWith("/my-list");
 
-  /* console.log(showSearchBar); */
   return (
     <div className="main-container">
       <div className="top-container">
         <div className="web-title" onClick={() => navigate("")}>
-          <img src="../../public/images/teeth.png"></img>
+          <img src="images/teeth.png"></img>
           <h1>THE DENTIST MOVIES</h1>
         </div>
         <NavBar />
