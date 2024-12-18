@@ -1,61 +1,98 @@
-import { errorMiddleware } from "../middleware/errorMiddleware.js";
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { AppError } from '../errors/AppError.js';
 import Rating from "../models/Rating.js";
-import User from "../models/User.js";
 
-export const getRatings = (req, res) => {
-  Rating.find()
-    .then((ratings) => res.json(ratings))
-    .catch((err) => errorMiddleware(err, res));
-};
+export const getRatings = asyncHandler(async (req, res) => {
+  const ratings = await Rating.find();
+  res.json(ratings);
+});
 
-export const createRating = (req, res) => {
-  const rating = req.body;
-  console.log(rating);
-  Rating.create(rating)
-    .then((rating) => {
-      rating.save();
-      res.json({ message: "Rating was saved" });
-    })
-    .catch((err) => errorMiddleware(err, res));
-};
+export const createRating = asyncHandler(async (req, res) => {
+  const { userId, movieId, rating } = req.body;
 
-export const getByUserId = (req, res, next) => {
-  const ID = req.params.userId;
-  Rating.find({ userId: ID })
-    .then((rating) => {
-      rating.length === 0 ? next() : res.json(rating);
-    })
-    .catch((err) => errorMiddleware(err, res));
-};
+  if (!userId || !movieId || rating === undefined) {
+    throw new AppError('Missing required fields', 400);
+  }
 
-export const getByMovieId = (req, res) => {
-  const ID = req.params.movieId;
-  Rating.find({ movieId: ID })
-    .then((rating) => res.json(rating))
-    .catch((err) => errorMiddleware(err, res));
-};
+  if (rating < 0 || rating > 10) {
+    throw new AppError('Rating must be between 0 and 10', 400);
+  }
 
-export const changeRating = (req, res) => {
-  const newRating = req.body;
-  console.log(newRating);
+  // Check if rating already exists
+  const existingRating = await Rating.findOne({ userId, movieId });
+  if (existingRating) {
+    throw new AppError('Rating already exists for this movie', 400);
+  }
 
-  Rating.findOneAndUpdate(
-    { movieId: newRating.movieId, userId: newRating.userId },
-    { rating: newRating.rating }
-  )
-    .then((updatedData) => {
-      if (!updatedData) {
-        return res.status(404).send({ message: "Rating not found" });
-      }
-      res.json({ message: "Rating was updated", updatedData });
-    })
-    .catch((err) => errorMiddleware(err, res));
-};
+  const newRating = await Rating.create({ userId, movieId, rating });
+  await newRating.save();
 
-export const deleteRating = (req, res) => {
-  const ID = req.params.ratingId;
-  console.log(ID);
-  Rating.findByIdAndDelete(ID)
-    .then((response) => res.json({ message: "Rating was removed" }))
-    .catch((err) => errorMiddleware(err, res));
-};
+  res.json({ message: "Rating was saved" });
+});
+
+export const getByUserId = asyncHandler(async (req, res) => {
+  const userId = req.params.userId;
+
+  const ratings = await Rating.find({ userId });
+
+  if (ratings.length === 0) {
+    // If this is used as middleware, we pass to next()
+    if (req.skipNotFound) {
+      return next();
+    }
+    return res.json([]);
+  }
+
+  res.json(ratings);
+});
+
+export const getByMovieId = asyncHandler(async (req, res) => {
+  const movieId = req.params.movieId;
+
+  const ratings = await Rating.find({ movieId });
+
+  if (ratings.length === 0) {
+    return res.json([]);
+  }
+
+  res.json(ratings);
+});
+
+export const changeRating = asyncHandler(async (req, res) => {
+  const { userId, movieId, rating } = req.body;
+
+  if (!userId || !movieId || rating === undefined) {
+    throw new AppError('Missing required fields', 400);
+  }
+
+  if (rating < 0 || rating > 10) {
+    throw new AppError('Rating must be between 0 and 10', 400);
+  }
+
+  const updatedRating = await Rating.findOneAndUpdate(
+    { movieId, userId },
+    { rating },
+    { new: true } // Returns the updated document
+  );
+
+  if (!updatedRating) {
+    throw new AppError('Rating not found', 404);
+  }
+
+  res.json({
+    message: "Rating was updated",
+    updatedData: updatedRating
+  });
+});
+
+export const deleteRating = asyncHandler(async (req, res) => {
+  const ratingId = req.params.ratingId;
+
+  const deletedRating = await Rating.findByIdAndDelete(ratingId);
+
+  if (!deletedRating) {
+    throw new AppError('Rating not found', 404);
+  }
+
+  res.json({ message: "Rating was removed" });
+});
