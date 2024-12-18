@@ -14,7 +14,6 @@ export const saveMoviesToDB = async (movies) => {
   for (const movie of moviesToSave) {
     const existingMovie = await Movie.findOne({ tmdb_id: movie.id });
     if (!existingMovie) {
-      console.log(`Saving movie: ${movie.title}`);
       const newMovie = new Movie({ tmdb_id: movie.id, ...movie });
       await newMovie.save();
     }
